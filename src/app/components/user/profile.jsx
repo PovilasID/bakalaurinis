@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import firebase from '../../utils/firebase';
 
+import TimePicker from 'material-ui/TimePicker';
+
 
 import { fetchUser, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
@@ -60,6 +62,9 @@ class UserProfile extends Component {
                           className="form-control" ref="displayName" id="displayName" placeholder="Display name"
                           name="displayName"
                         />
+                    </div>
+                    <div>
+                        <TimePicker hintText="12hr Format" />
                     </div>
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
