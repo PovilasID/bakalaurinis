@@ -3,10 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import firebase from '../../utils/firebase';
 
+import Button from 'react-toolbox/lib/button/Button';
 
 import { fetchUser, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
+
+
+let time = new Date();
+time.setHours(17);
+time.setMinutes(28);
 
 class UserProfile extends Component {
 
@@ -15,6 +21,7 @@ class UserProfile extends Component {
         this.props.fetchUser();
         this.state = {
             message: '',
+            time,
         };
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
@@ -34,6 +41,10 @@ class UserProfile extends Component {
         }
     );
     }
+
+    handleChange = (time) => {
+    this.setState({time});
+  };
 
     render() {
         if (!this.props.currentUser) {
@@ -60,6 +71,10 @@ class UserProfile extends Component {
                           className="form-control" ref="displayName" id="displayName" placeholder="Display name"
                           name="displayName"
                         />
+                    </div>
+                    <div>
+                        <Button icon='bookmark' label='Bookmark' accent />
+
                     </div>
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
