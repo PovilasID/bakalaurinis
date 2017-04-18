@@ -15,6 +15,8 @@ class UserProfile extends Component {
         this.props.fetchUser();
         this.state = {
             message: '',
+            morning: 'disabled',
+            evening: 'disabled',
         };
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
@@ -35,6 +37,18 @@ class UserProfile extends Component {
     );
     }
 
+    //@ TODO Merge evening and morning methods into one universal
+    handleMorningReminderChange (){
+       console.log(this.refs.morning_reminder.checked);
+        this.refs.morning_reminder.checked?this.setState({morning:''}):this.setState({morning:'disabled'})
+    console.log(this.state.morning)
+    }
+
+    handleEveningReminderChange (){
+       console.log(this.refs.morning_reminder.checked);
+        this.refs.evening_reminder.checked?this.setState({evening:''}):this.setState({evening:'disabled'})
+    console.log(this.state.evening)
+    }
     render() {
         if (!this.props.currentUser) {
             return <Loading />;
@@ -71,7 +85,29 @@ class UserProfile extends Component {
                         FEV1
                       </label>
                     </div>
-                    
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <label class="Morning"> Morning reminders
+                        <div className="input-group">
+                          <span className="input-group-addon">
+                            <input type="checkbox" ref="morning_reminder"  onChange={this.handleMorningReminderChange.bind(this)} aria-label="Checkbox for following text input"/>
+                          </span>
+                          <input type="text" className="form-control" aria-label="Text input with checkbox" disabled={this.state.morning}/>
+                        </div>
+                        </label>
+                      </div>
+                      <div className="col-lg-6">
+                      <label class="Morning"> Evening reminders
+                        <div className="input-group">
+                          <span className="input-group-addon">
+                            <input type="checkbox" ref="evening_reminder" onChange={this.handleEveningReminderChange.bind(this)} aria-label="Radio button for following text input"/>
+                          </span>
+                          <input type="text" className="form-control" aria-label="Text input with radio button"disabled={this.state.evening} />
+                        </div>
+                        </label>
+                      </div>
+                    </div>
+
 
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
