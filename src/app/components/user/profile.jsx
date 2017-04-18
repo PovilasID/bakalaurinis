@@ -61,6 +61,18 @@ class UserProfile extends Component {
                           name="displayName"
                         />
                     </div>
+                    <div className="user-prefs">
+                      <label class="PEF">
+                        <input class="form-check-input" type="checkbox" value="pef"/>
+                        PEF
+                      </label>
+                      <label class="FEV1">
+                        <input class="form-check-input" type="checkbox" value="FEV1"/>
+                        FEV1
+                      </label>
+                    </div>
+                    
+
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
                 <ChangePassword />
