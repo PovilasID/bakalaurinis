@@ -18,7 +18,6 @@ import Menu from 'material-ui/svg-icons/navigation/menu';
 
 
 class Login extends Component {
-  static muiName = 'FlatButton';
 
   render() {
     return (
@@ -28,7 +27,6 @@ class Login extends Component {
 }
 
 class Logged extends Component {
-  static muiName = 'FlatButton';
 
   render() {
     return (
@@ -55,7 +53,7 @@ class App extends Component {
 
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
-        this.state = {open: false};
+        this.state = {drawerOpen: false};
     }
 
     logOut() {
@@ -67,36 +65,9 @@ class App extends Component {
     }
 
 
+  handleDrawerToggle = () => this.setState({drawerOpen: !this.state.drawerOpen});
 
-    renderUserMenu(currentUser) {
-    // if current user exists and user id exists than make user navigation
-        if (currentUser && currentUser.uid) {
-            return (
-                <li className="dropdown">
-                    <a
-                      href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-                      aria-haspopup="true" aria-expanded="false"
-                    >
-                        {currentUser.email} <span className="caret" /></a>
-                    <ul className="dropdown-menu">
-                        <li><Link to="/profile">Profile</Link></li>
-                        <li role="separator" className="divider" />
-                        <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
-                    </ul>
-                </li>
-            );
-        } else {
-            return [
-                <li key={1}><Link to="/login">Login</Link></li>,
-                <li key={2}><Link to="/register">Register</Link></li>,
-            ];
-        }
-    }
-
-
-  handleToggle = () => this.setState({open: !this.state.open});
-
-  handleClose = () => this.setState({open: false});
+  handleDrawerClose = () => this.setState({drawerOpen: false});
 
     render() {
         return (
@@ -104,7 +75,7 @@ class App extends Component {
             <div>
                 <AppBar
                   title="Firebase & Redux boilerplate"
-                  iconElementLeft={<IconButton><Menu onTouchTap={this.handleToggle} /></IconButton>}
+                  iconElementLeft={<IconButton><Menu onTouchTap={this.handleDrawerToggle} /></IconButton>}
                   iconElementRight={this.props.currentUser ? <Logged logout={this.props.logoutUser}/> : <Login />}
                 />
 
@@ -113,15 +84,15 @@ class App extends Component {
                     {this.props.children}
                 </div>
 
-                <Drawer
+                <Drawer 
                   docked={false}
                   width={200}
-                  open={this.state.open}
-                  onRequestChange={(open) => this.setState({open})}
+                  open={this.state.drawerOpen}
+                  onRequestChange={(drawerOpen) => this.setState({drawerOpen})}
                 >
-                  <MenuItem href="/" onTouchTap={this.handleClose}>Home</MenuItem>
-                  <MenuItem href="/login" onTouchTap={this.handleClose}>Login</MenuItem>
-                  <MenuItem href="/register" onTouchTap={this.handleClose}>Register</MenuItem>
+                  <MenuItem href="/" onTouchTap={this.handleDrawerClose}>Home</MenuItem>
+                  <MenuItem href="/login" onTouchTap={this.handleDrawerClose}>Login</MenuItem>
+                  <MenuItem href="/register" onTouchTap={this.handleDrawerClose}>Register</MenuItem>
                 </Drawer>                
             </div>
         );

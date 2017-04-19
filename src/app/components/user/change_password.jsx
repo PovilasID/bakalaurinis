@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { changePassword } from '../../actions/firebase_actions';
 
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
+
 class ChangePassword extends Component {
 
   constructor(props) {
@@ -37,19 +41,19 @@ class ChangePassword extends Component {
         <h4> Change Password </h4>
         <h5> {this.state.message} </h5>
         <div className="form-group">
-          <label htmlFor="password"> New Password: </label>
-          <input type="password" className="form-control"
-            name="password" ref="password" id="password" 
+          <TextField
+            floatingLabelText="New Password"
+            type="password" name="password" ref="password" id="password" 
           />
         </div>
         <div className="form-group">
-          <label htmlFor="repeatPassword"> Repeat Password: </label>
-          <input type="password" className="form-control"
-            name="repeatPassword" ref="repeatPassword" id="repeatPassword" 
+          <TextField
+            floatingLabelText="Repeat Password"
+            type="password" name="repeatPassword" ref="repeatPassword" id="repeatPassword"
           />
-
+ 
         </div>
-        <button type="submit" className="btn btn-primary">Change Password</button>
+        <RaisedButton type="submit" label="Change Password" secondary={true} />
       </form>
     );
   }

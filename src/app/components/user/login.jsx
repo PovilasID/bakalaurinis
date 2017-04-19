@@ -4,6 +4,30 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginUser, fetchUser, loginWithProvider } from '../../actions/firebase_actions';
 
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+
+import FontIcon from 'material-ui/FontIcon';
+
+
+
+const styles = {
+  button: {
+    margin: 12,
+  },
+  facebook: {
+    backgroundColor: "#4267b2",
+    color: '#fff',
+    marginRight: 12,
+  },
+  google:{
+    backgroundColor: '#DD4B39',
+    color: '#fff',
+    marginRight: 12,
+  },
+};
+
 
 class UserLogin extends Component {
 
@@ -50,47 +74,43 @@ class UserLogin extends Component {
                     </p>
                     <h2>Login</h2>
                     <div className="form-group">
-                        <label htmlFor="txtEmail">Email address</label>
-                        <input
-                          type="email" className="form-control" id="txtEmail" ref="email" placeholder="Enter email"
-                          name="email"
+                        <TextField
+                          floatingLabelText="Email address"
+                          id="txtEmail" ref="email" name="email"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="txtPass">Password</label>
-                        <input
-                          type="password" className="form-control" id="txtPass" ref="password" placeholder="Password"
-                          name="password"
-                        />
+                        <TextField
+                          floatingLabelText="Password"
+                          type="password" id="txtPass" ref="password" name="password"
+                        />                        
                     </div>
-                    <button type="submit" className="btn btn-default btn-block">Login</button>
+                    <RaisedButton type="submit" label="Login" fullWidth={true}   primary={true}   />
                     <br />
-                    <h5><Link to="/reset">Forgot password?</Link></h5>
+                    <FlatButton href="/reset" label="Forgot password?" secondary={true} />
 
                     <h4>Login with</h4>
-                    <a
-                      href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
+
+                    <FlatButton
+                      onTouchTap={() => {
                           this.loginWithProvider('facebook');
-                      }} data-provider="facebook"
-                    >Facebook</a>
+                      }}
+                      target="_blank"
+                      label="Facebook"
 
-                    <a
-                      href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
-                          this.loginWithProvider('twitter');
-                      }} data-provider="twitter"
-                    >Twitter</a>
-
-                    <a
-                      href="#" className="btn btn-block btn-social btn-google" onClick={() => {
+                      style={styles.button, styles.facebook}
+                      icon={<FontIcon className="fa fa-facebook"></FontIcon>}
+                    />
+                    <FlatButton
+                      onTouchTap={() => {
                           this.loginWithProvider('google');
-                      }} data-provider="twitter"
-                    >Google</a>
+                      }}
+                      target="_blank"
+                      label="Google"
 
-                    <a
-                      href="#" className="btn btn-block btn-social btn-github" onClick={() => {
-                          this.loginWithProvider('github');
-                      }} data-provider="twitter"
-                    >Github</a>
+                      style={styles.button, styles.google }
+                      icon={<FontIcon className="fa fa-google"></FontIcon>}
+                    />
 
                 </form>
             </div>
