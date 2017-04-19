@@ -4,6 +4,50 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUser, logoutUser } from '../actions/firebase_actions';
 
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import Drawer from 'material-ui/Drawer';
+
+
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Menu from 'material-ui/svg-icons/navigation/menu';
+
+
+class Login extends Component {
+  static muiName = 'FlatButton';
+
+  render() {
+    return (
+      <FlatButton {...this.props} href="/login" label="Login" />
+    );
+  }
+}
+
+class Logged extends Component {
+  static muiName = 'FlatButton';
+
+  render() {
+    return (
+      <IconMenu
+        iconButtonElement={
+          <IconButton><MoreVertIcon /></IconButton>
+        }
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+      >
+        <MenuItem primaryText="Profile" href="/profile" />
+        <MenuItem primaryText="Sign out" onTouchTap={this.props.logout} href="/"/>
+  </IconMenu>
+    );
+  }
+}
+
+
+
 class App extends Component {
 
     constructor(props) {
@@ -11,14 +55,18 @@ class App extends Component {
 
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
+        this.state = {open: false};
     }
 
     logOut() {
+        console.log(this.props);
         this.props.logoutUser().then((data) => {
       // reload props from reducer
             this.props.fetchUser();
         });
     }
+
+
 
     renderUserMenu(currentUser) {
     // if current user exists and user id exists than make user navigation
@@ -45,38 +93,36 @@ class App extends Component {
         }
     }
 
+
+  handleToggle = () => this.setState({open: !this.state.open});
+
+  handleClose = () => this.setState({open: false});
+
     render() {
         return (
-            <div>
-                <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
-                    <div className="container">
-                        <div className="navbar-header">
-                            <button
-                              className="navbar-toggle collapsed" type="button" data-toggle="collapse"
-                              data-target=".bs-navbar-collapse"
-                            ><span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar" />
-                                <span className="icon-bar" />
-                                <span className="icon-bar" />
-                            </button>
-                            <Link to="/" className="navbar-brand">Firebase & Redux boilerplate</Link>
 
-                        </div>
-                        <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-                            <ul className="nav navbar-nav">
-                                <li><Link to="/"> Home</Link></li>
-                ,
-              </ul>
-                            <ul className="nav navbar-nav navbar-right">
-                                { this.renderUserMenu(this.props.currentUser) }
-                            </ul>
-                        </nav>
-                    </div>
-                </header>
+            <div>
+                <AppBar
+                  title="Firebase & Redux boilerplate"
+                  iconElementLeft={<IconButton><Menu onTouchTap={this.handleToggle} /></IconButton>}
+                  iconElementRight={this.props.currentUser ? <Logged logout={this.props.logoutUser}/> : <Login />}
+                />
+
 
                 <div className="container">
                     {this.props.children}
                 </div>
+
+                <Drawer
+                  docked={false}
+                  width={200}
+                  open={this.state.open}
+                  onRequestChange={(open) => this.setState({open})}
+                >
+                  <MenuItem href="/" onTouchTap={this.handleClose}>Home</MenuItem>
+                  <MenuItem href="/login" onTouchTap={this.handleClose}>Login</MenuItem>
+                  <MenuItem href="/register" onTouchTap={this.handleClose}>Register</MenuItem>
+                </Drawer>                
             </div>
         );
     }
