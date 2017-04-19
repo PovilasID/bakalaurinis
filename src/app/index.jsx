@@ -8,7 +8,6 @@ import ReduxPromise from 'redux-promise';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-
 var injectTapEventPlugin = require("react-tap-event-plugin");
 
 
