@@ -8,6 +8,8 @@ module.exports = (options) => {
 
   const webpackConfig = {
     devtool: options.devtool,
+    sassLoaders: 'style-loader!css-loader?localIdentName=[local]__[path]    [name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader!sass-loader',
+
     entry: [
       `webpack-dev-server/client?http://localhost:${+options.port}`,
       'webpack/hot/dev-server',
@@ -24,11 +26,17 @@ module.exports = (options) => {
       loaders: [
         {test: /.jsx?$/, include: Path.join(__dirname, '../src/app'), loader: 'babel',},
         {test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel'},
-        {test: /\.css$/, loader: 'style-loader!css-loader'},
+      {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss?sourceMap&sourceComments',
+        ],
+      },
         {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
         {test: /\.(woff|woff2)$/, loader: "url?prefix=font/&limit=5000"},
         {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream"},
-        {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"}
+        {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"},
       ],
     },
     plugins: [
@@ -40,6 +48,8 @@ module.exports = (options) => {
       new HtmlWebpackPlugin({
         template: Path.join(__dirname, '../src/index.html'),
       }),
+    require('postcss-cssnext'),
+
     ],
   };
 
@@ -58,7 +68,8 @@ module.exports = (options) => {
 
     webpackConfig.module.loaders.push({
       test: /\.scss$/,
-      loader: ExtractSASS.extract(['css', 'sass']),
+      include: /node_modules/,
+      loader: options.sassLoaders,
     });
   } else {
     webpackConfig.plugins.push(

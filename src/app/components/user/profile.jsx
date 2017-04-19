@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import firebase from '../../utils/firebase';
 
-import Button from 'react-toolbox/lib/button/Button';
+import Button  from 'react-toolbox/lib/button/Button';
 
 import { fetchUser, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
@@ -73,7 +73,7 @@ class UserProfile extends Component {
                         />
                     </div>
                     <div>
-                        <Button icon='bookmark' label='Bookmark' accent />
+                    <Button label="Hello World!" />
 
                     </div>
                     <button type="submit" className="btn btn-primary">Update</button>
