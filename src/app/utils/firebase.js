@@ -75,11 +75,29 @@ const FireBaseTools = {
         const unsub = firebaseAuth.onAuthStateChanged((user) => {
             unsub();
             resolve(user);
+            console.log("RAW USER", user);
         }, (error) => {
             reject(error);
         });
+        //console.log("RAW UNSUB", unsub);
     }),
 
+  /**
+   * Retrieve the current users settings (Promise)
+   * @returns {Promise}
+   */
+    fetchUserSettings: (userUID) => new Promise((resolve, reject) => {
+      console.log("UID FROM CURRENT USER", userUID);
+
+      const firebaseSettingsRef = firebaseDb.ref("settings").child("IInlc8u3IabsEZIOaVMXlvO9EjA2");
+      firebaseSettingsRef.on('value', snap => {
+        //unsub();
+
+        resolve(snap.val());
+      }, (error) => {
+        reject(error);
+      });
+    }),
   /**
    * Log the user in using email and password
    *

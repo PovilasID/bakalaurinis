@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import firebase from '../../utils/firebase';
 
 
-import { fetchUser, updateUser } from '../../actions/firebase_actions';
+import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
 
@@ -13,6 +13,11 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.props.fetchUser();
+        this.props.fetchUserSettings("IInlc8u3IabsEZIOaVMXlvO9EjA2");
+        console.log("FULL STATE", this.state);
+        console.log("FULL PROPS", this.props);
+
+
         this.state = {
             message: '',
             morning: 'disabled',
@@ -25,7 +30,10 @@ class UserProfile extends Component {
         event.preventDefault();
         const email = this.refs.email.value;
         const displayName = this.refs.displayName.value;
-        this.props.updateUser({ email, displayName }).then((data) => {
+                console.log("USER PASSED TO RENDER", this.props.currentUser);
+                console.log("USER SETTINGS PASSED TO RENDER", this.props.currentUserSettings);
+
+        this.props.updateUser({ email, displayName}).then((data) => {
             if (data.payload.errorCode) {
                 this.setState({ message: data.payload.errorMessage });
             } else {
@@ -50,9 +58,12 @@ class UserProfile extends Component {
     console.log(this.state.evening)
     }
     render() {
-        if (!this.props.currentUser) {
+        if (!this.props.currentUser && !this.props.currentUserSettings) {
             return <Loading />;
         }
+                console.log("USER PASSED TO RENDER", this.props.currentUser);
+                console.log("USER SETTINGS PASSED TO RENDER", this.props.currentUserSettings);
+        console.log("ALL PROP", this.props);
 
         return (
             <div className="col-md-6">
@@ -120,13 +131,13 @@ class UserProfile extends Component {
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchUser, updateUser }, dispatch);
+    return bindActionCreators({ fetchUser, fetchUserSettings, updateUser }, dispatch);
 }
 
 
 function mapStateToProps(state) {
-    return { currentUser: state.currentUser };
-}
+    return { currentUser: state.currentUser, currentUserSettings: state.currentUserSettings};
 
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
