@@ -7,6 +7,8 @@ import firebase from '../../utils/firebase';
 import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
+import SubmitConditionData from './submit_condition_data';
+import ConditionChart from './condition_chart';
 
 class UserProfile extends Component {
 
@@ -66,6 +68,7 @@ class UserProfile extends Component {
         console.log("ALL PROP", this.props);
 
         return (
+
             <div className="col-md-6">
                 <form id="frmProfile" role="form" onSubmit={this.onFormSubmit}>
                     <h2>User Profile Page</h2>
@@ -122,7 +125,9 @@ class UserProfile extends Component {
 
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
+                <SubmitConditionData />
                 <ChangePassword />
+                <ConditionChart />
             </div>
         );
     }
