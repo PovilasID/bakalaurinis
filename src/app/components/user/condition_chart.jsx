@@ -15,27 +15,43 @@ class ConditionChart extends Component {
       this.state = {
         message: '',
         options: {
-        title: 'Age vs. Weight comparison',
-        hAxis: { title: 'Age', minValue: 0, maxValue: 15 },
-        vAxis: { title: 'Weight', minValue: 0, maxValue: 15 },
+        title: 'PEF change overtiem',
+        hAxis: { title: 'Time'},
+        vAxis: { title: 'PEF',                 viewWindow: {
+                    min: 0
+                } },
         legend: 'none',
+        curveType: 'function',
+
       },
       data: [
-        ['Age', 'Weight'],
-        [8, 12],
-        [4, 5.5],
-        [11, 14],
-        [4, 5],
-        [3, 3.5],
-        [6.5, 7],
+        ['Date', 'PEF'],
       ],
+
     };
   }
 
   componentDidMount(){
+
+     function Comparator(a, b) {
+       if (a[0] < b[0]) return -1;
+       if (a[0] > b[0]) return 1;
+       return 0;
+     }
     console.log("USER ID IN CHARTS", this.props.currentUser.uid);
     firebaseDb.ref("pef").child(this.props.currentUser.uid).orderByChild("timestamp").on('value', snap =>{
-      console.log("USERS PEF IN CHART", snap.val());
+      var data = snap.val();
+      var chartData = [['Date', 'PEF']];
+      var chartDataRaw = Object.keys(data).map(function (key) {
+        return [new Date(data[key].timestamp), Number(data[key].pef)]; 
+      });
+      chartDataRaw = chartDataRaw.sort(Comparator)
+       this.setState({
+        data: chartData.concat(chartDataRaw)
+      })
+      console.log("STATE FORMAT", this.state.data);
+      console.log("CONCAT RESULTS", chartData.concat(chartDataRaw) );
+      console.log("CHART ARRAY DEFAULTS", this.state.data);
       console.log("TEST GOOGLE DATE FORMAT", new Date(2000, 8, 5));
 
     });

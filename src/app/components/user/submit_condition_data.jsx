@@ -29,9 +29,10 @@ class SubmitConditionData extends Component {
   onFormSubmit(event) {
       event.preventDefault();
       let pef = this.refs.pef.value;
+      let timestamp = this.state.startDate.valueOf();
       firebaseDb.ref("pef").child(this.props.currentUser.uid).push().set({
         pef: pef,
-        timestamp: this.state.startDate.unix()*1000,
+        timestamp: timestamp,
       });
 
     
