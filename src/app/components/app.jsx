@@ -32,6 +32,7 @@ class App extends Component {
                         {currentUser.email} <span className="caret" /></a>
                     <ul className="dropdown-menu">
                         <li><Link to="/profile">Profile</Link></li>
+                        <li><Link to="/dashboard">Dashboard</Link></li>
                         <li role="separator" className="divider" />
                         <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
                     </ul>

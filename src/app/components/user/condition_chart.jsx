@@ -17,9 +17,11 @@ class ConditionChart extends Component {
         options: {
         title: 'PEF change overtiem',
         hAxis: { title: 'Time'},
-        vAxis: { title: 'PEF',                 viewWindow: {
-                    min: 0
-                } },
+        vAxis: { title: 'PEF',
+          viewWindow: {
+            min: 0
+          } 
+        },
         legend: 'none',
         curveType: 'function',
 

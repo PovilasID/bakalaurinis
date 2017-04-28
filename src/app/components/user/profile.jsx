@@ -7,8 +7,6 @@ import firebase from '../../utils/firebase';
 import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
-import SubmitConditionData from './submit_condition_data';
-import ConditionChart from './condition_chart';
 
 class UserProfile extends Component {
 
@@ -125,9 +123,7 @@ class UserProfile extends Component {
 
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
-                <SubmitConditionData />
                 <ChangePassword />
-                <ConditionChart />
             </div>
         );
     }
