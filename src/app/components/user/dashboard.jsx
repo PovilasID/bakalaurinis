@@ -9,13 +9,13 @@ import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
 import SubmitConditionData from './submit_condition_data';
 import ConditionChart from './condition_chart';
+import ConditionSummary from './condition_summary';
 
 class Dashboard extends Component {
 
     constructor(props) {
         super(props);
         this.props.fetchUser();
-        this.props.fetchUserSettings("IInlc8u3IabsEZIOaVMXlvO9EjA2");
         console.log("FULL STATE", this.state);
         console.log("FULL PROPS", this.props);
 
@@ -35,9 +35,16 @@ class Dashboard extends Component {
 
         return (
 
-            <div className="col-md-6">
-                <SubmitConditionData />
-                <ConditionChart />
+            <div className="col-md-12">
+                <div className="col-md-6">
+                    <SubmitConditionData />
+                </div>
+                <div className="col-md-6">
+                    <ConditionSummary />
+                </div>
+                <div className="col-md-12">
+                    <ConditionChart />
+                </div>
             </div>
         );
     }

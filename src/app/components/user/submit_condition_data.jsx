@@ -74,7 +74,7 @@ class SubmitConditionData extends Component {
         </div>
         <div className="form-group">
           <DatePicker
-              dateFormat="DD-MMM HH:mm"
+              dateFormat="YYYY-MM-DD HH:mm"
               selected={this.state.startDate}
               todayButton="Today"
               onChange={this.handleDateTimeChange}

@@ -33,6 +33,8 @@ class ConditionChart extends Component {
     };
   }
 
+  //@ TODO code for no data
+
   componentDidMount(){
 
      function Comparator(a, b) {
@@ -41,7 +43,7 @@ class ConditionChart extends Component {
        return 0;
      }
     console.log("USER ID IN CHARTS", this.props.currentUser.uid);
-    firebaseDb.ref("pef").child(this.props.currentUser.uid).orderByChild("timestamp").on('value', snap =>{
+    firebaseDb.ref("pef").child(this.props.currentUser.uid).on('value', snap =>{
       var data = snap.val();
       var chartData = [['Date', 'PEF']];
       var chartDataRaw = Object.keys(data).map(function (key) {
