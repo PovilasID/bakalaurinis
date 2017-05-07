@@ -7,6 +7,7 @@ import firebase from '../../utils/firebase';
 import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
+import SubmitUserSettings from './submit_user_settings';
 
 class UserProfile extends Component {
 
@@ -120,9 +121,9 @@ class UserProfile extends Component {
                       </div>
                     </div>
 
-
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
+                <SubmitUserSettings />
                 <ChangePassword />
             </div>
         );
