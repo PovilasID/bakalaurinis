@@ -29,12 +29,26 @@ class SubmitConditionData extends Component {
   onFormSubmit(event) {
       event.preventDefault();
       let pef = this.refs.pef.value;
+      let fev1 = this.refs.fev1.value;
       let timestamp = this.state.startDate.valueOf();
-      firebaseDb.ref("pef").child(this.props.currentUser.uid).push().set({
-        pef: pef,
-        timestamp: timestamp,
-      });
-
+      this.setState({message: '',});
+      if (pef) {
+        firebaseDb.ref("pef").child(this.props.currentUser.uid).push().set({
+          pef: pef,
+          timestamp: timestamp,
+        });
+        if(fev1){
+          firebaseDb.ref("fev1").child(this.props.currentUser.uid).push().set({
+          fev1: fev1,
+          timestamp: timestamp,
+        });
+        }
+      }else{
+        this.setState({
+          message: 'Please enter PEF',
+        });
+      }
+      
     
   }
 
@@ -48,6 +62,15 @@ class SubmitConditionData extends Component {
           <input type="number" min="0" className="form-control"
             name="pef" ref="pef" id="pef" 
           />
+          <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Add FEV 1
+          </button>
+          <div className="collapse" id="collapseExample">
+            <label htmlFor="fev1"> FEV1 </label>
+            <input type="number" min="0" className="form-control"
+              name="fev1" ref="fev1" id="fev1" 
+            />
+          </div>
         </div>
         <div className="form-group">
           <DatePicker
