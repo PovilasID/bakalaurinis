@@ -17,7 +17,8 @@ class ConditionSummary extends Component {
   }
 
   renderSummary(){
-    return (<p>BAAAA</p>);
+
+    return ( <p>GAAAA</p>);
   }
 
 

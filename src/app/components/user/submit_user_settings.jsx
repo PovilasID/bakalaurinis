@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { submitCondition } from '../../actions/firebase_actions';
 import {firebase,firebaseDb} from '../../utils/firebase';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+//import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import {RadioGroup, Radio} from 'react-radio-group';
 
