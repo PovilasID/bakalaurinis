@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import firebase from '../../utils/firebase';
+import {firebase, firebaseDb} from '../../utils/firebase';
+import { submitCondition } from '../../actions/firebase_actions';
 
-
-import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
-import ChangePassword from './change_password';
 import SubmitConditionData from './submit_condition_data';
 import ConditionChart from './condition_chart';
 import ConditionSummary from './condition_summary';
@@ -15,21 +13,17 @@ class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.props.fetchUser();
-        console.log("FULL STATE", this.state);
-        console.log("FULL PROPS", this.props);
 
 
         this.state = {
             message: '',
-            morning: 'disabled',
-            evening: 'disabled',
+            data: [],
         };
     }
 
 
     render() {
-        if (!this.props.currentUser && !this.props.currentUserSettings) {
+        if (!this.props.currentUser ) {
             return <Loading />;
         }
 
@@ -53,13 +47,11 @@ class Dashboard extends Component {
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchUser, fetchUserSettings, updateUser }, dispatch);
+    return bindActionCreators({ submitCondition }, dispatch);
 }
 
-
 function mapStateToProps(state) {
-    return { currentUser: state.currentUser, currentUserSettings: state.currentUserSettings};
-
+    return { currentUser: state.currentUser };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

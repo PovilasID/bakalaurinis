@@ -28,6 +28,7 @@ class ConditionChart extends Component {
       },
       data: [
         ['Date', 'PEF'],
+        [0,0]
       ],
 
     };

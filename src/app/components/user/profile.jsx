@@ -14,7 +14,6 @@ class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.props.fetchUser();
-        this.props.fetchUserSettings("IInlc8u3IabsEZIOaVMXlvO9EjA2");
         console.log("FULL STATE", this.state);
         console.log("FULL PROPS", this.props);
 
