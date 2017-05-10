@@ -57,12 +57,15 @@ class ConditionSummary extends Component {
           });
 
         }else if (lastPEF[1] > norms["min"] && lastPEF[1] < norms["mid"]) {
+
           this.setState({
+
             summaryText: "CAUSION! Your last PEF meassument was: "+lastPEF[1]+
             " Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress."+
             "Please be careful.",
           });
         }else if (lastPEF[1] >= norms["mid"] ) {
+
           this.setState({
             summaryText: "Congradulations! Your last PEF meassument was: "+lastPEF[1]+
             " Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress."+

@@ -87,38 +87,7 @@ class UserProfile extends Component {
                           name="displayName"
                         />
                     </div>
-                    <div className="user-prefs">
-                      <label class="PEF">
-                        <input class="form-check-input" type="checkbox" value="pef"/>
-                        PEF
-                      </label>
-                      <label class="FEV1">
-                        <input class="form-check-input" type="checkbox" value="FEV1"/>
-                        FEV1
-                      </label>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-6">
-                        <label class="Morning"> Morning reminders
-                        <div className="input-group">
-                          <span className="input-group-addon">
-                            <input type="checkbox" ref="morning_reminder"  onChange={this.handleMorningReminderChange.bind(this)} aria-label="Checkbox for following text input"/>
-                          </span>
-                          <input type="text" className="form-control" aria-label="Text input with checkbox" disabled={this.state.morning}/>
-                        </div>
-                        </label>
-                      </div>
-                      <div className="col-lg-6">
-                      <label class="Morning"> Evening reminders
-                        <div className="input-group">
-                          <span className="input-group-addon">
-                            <input type="checkbox" ref="evening_reminder" onChange={this.handleEveningReminderChange.bind(this)} aria-label="Radio button for following text input"/>
-                          </span>
-                          <input type="text" className="form-control" aria-label="Text input with radio button"disabled={this.state.evening} />
-                        </div>
-                        </label>
-                      </div>
-                    </div>
+                    
 
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
