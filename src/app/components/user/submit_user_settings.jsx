@@ -35,12 +35,46 @@ class SubmitUserSettings extends Component {
       let sex = this.state.sex;
       console.log("data imput", height, birthday, sex);
       this.setState({message: '',});
+      var pefMin =0;
+      var pefMid=0;
+      function getAge(dateString) {
+          var today = new Date();
+          var birthDate = new Date(dateString);
+          var age = today.getFullYear() - birthDate.getFullYear();
+          var m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+              age--;
+          }
+          return age;
+      }
+      function eTo(x){
+      return Math.exp(x);
+      }
+      function ln(i){
+      return Math.log(i);
+      }
+
+      var age = getAge(birthday);
+      if(sex == "male"){
+        //pefMin =Math.pow(Math.E, 0.544 * Math.log10(age) - 0.0151 *(age) - 74.7/(height) + 5.48);
+        pefMin=  (eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48))*0.5;
+        pefMid=  eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48);
+      }else{
+        pefMid =  eTo((0.376 * ln(Age)) - (0.012 * Age) - (58.8 / Height) + 5.63);
+        pefMin = (eTo((0.376 * ln(Age)) - (0.012 * Age) - (58.8 / Height) + 5.63))*0.5;
+
+      } 
 
       if(height && birthday && sex){
         firebaseDb.ref("settings").child(this.props.currentUser.uid).set({
           height: height,
           birthday: birthday,
           sex: sex,
+          pefNorms:{
+            min: pefMin,
+            mid: pefMid,
+          }
+
         });
         this.setState({
           message: 'Personal settings set',
