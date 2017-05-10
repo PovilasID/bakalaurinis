@@ -13,22 +13,26 @@ class ConditionSummary extends Component {
       this.state = {
         message: '',
         fullSummary: '',
+        summaryText: '',
+        summaryType: '',
 
     };
   }
 
-  renderSummary(){
+  componentDidMount(){
     var lastPEF = 0;
      function Comparator(a, b) {
        if (a[0] > b[0]) return -1;
        if (a[0] < b[0]) return 1;
        return 0;
      }
-    var pefRef = firebaseDb.ref('paf/'+this.props.currentUser.uid);
+    var pefRef = firebaseDb.ref('pef/'+this.props.currentUser.uid);
     pefRef.on('value', snap =>{
       var data = snap.val();
       if(data==null){
-        return <p>Please enter at least one PEF meassument</p>;
+      this.setState({
+        summaryText: "Please enter at least one PEF meassument",
+      });
       }
       var chartData = [['Date', 'PEF']];
       var chartDataRaw = Object.keys(data).map(function (key) {
@@ -36,13 +40,37 @@ class ConditionSummary extends Component {
       });
       chartDataRaw = chartDataRaw.sort(Comparator)
       lastPEF = chartDataRaw[Object.keys(chartDataRaw)[0]];
-      console.log("last pEF", lastPEF);
+      this.setState({
+        summaryText: "Your last PEF meassument was: "+lastPEF[1],
+      });
+      console.log("last pEF", lastPEF[1]);
     });
 
     firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
-      if(snap.val() == null){
-        console.log("CALL NULL", lastPEF[1]);
-         return (<p>Your last PEF meassument was<h3>{lastPEF[1]}</h3></p>);
+      if(snap.val() != null){
+        var norms = snap.val()["pefNorms"];
+        if(lastPEF[1] <= norms["min"]){
+          console.log("BELOW MIN");
+          this.setState({
+            summaryText: "WARNING! Your last PEF meassument was: "+lastPEF[1]+
+            " Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.",
+          });
+
+        }else if (lastPEF[1] > norms["min"] && lastPEF[1] < norms["mid"]) {
+          this.setState({
+            summaryText: "CAUSION! Your last PEF meassument was: "+lastPEF[1]+
+            " Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress."+
+            "Please be careful.",
+          });
+        }else if (lastPEF[1] >= norms["mid"] ) {
+          this.setState({
+            summaryText: "Congradulations! Your last PEF meassument was: "+lastPEF[1]+
+            " Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress."+
+            "Enjoy your day.",
+          });
+        }
+        console.log("CALL NT NULL", snap.val()["pefNorms"]["min"]);
+
       }else{
 
       }
@@ -57,12 +85,7 @@ class ConditionSummary extends Component {
     render() {
       return (
       <div className="jumbotron">
-        <h1>Hello, world!</h1>
-                <div className="alert alert-success" role="alert">
-          <p>WEEE</p>
-        </div>
-        <div>{this.renderSummary()}</div>
-        <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        <div>{this.state.summaryText}</div>
       </div>
     );
   }
