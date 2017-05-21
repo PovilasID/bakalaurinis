@@ -10,14 +10,14 @@
       "$user_id": {
         ".write": "$user_id === auth.uid",
         ".read": "$user_id === auth.uid"
-      },
+      }
+    },
     "settings": {
       "$user_id": {
         ".write": "$user_id === auth.uid",
         ".read": "$user_id === auth.uid"
       }
-    },
-    "users": {
+    },    "users": {
       "$user_id": {
         ".write": "$user_id === auth.uid",
         ".read": "$user_id === auth.uid"
