@@ -35,7 +35,6 @@ class SubmitUserSettings extends Component {
   }
   componentDidMount(){
 
-      console.log("USER ID IN dash", this.props.currentUser);
     firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
       var data = snap.val();
 
