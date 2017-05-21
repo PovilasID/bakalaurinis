@@ -17,20 +17,40 @@ class SubmitUserSettings extends Component {
       this.onFormSubmit = this.onFormSubmit.bind(this);
       this.state = {
         message: '',
-        startDate: moment().subtract(18, 'years'),  // Yesterday at 4:11 PM
+        startDate: moment().subtract(18, 'years'), 
         sex: '',
+        height: '',
     };
     this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
   }
+
 
   handleDateTimeChange(date) {
     this.setState({
       startDate: date
     });
   }
+  handleHeightChange(event) {
+    this.setState({height: event.target.value});
+  }
+  componentDidMount(){
+
+      console.log("USER ID IN dash", this.props.currentUser);
+    firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
+      var data = snap.val();
+
+       this.setState({
+        height: data.height,
+        startDate: moment(data.birthday),
+        sex: data.sex,
+      })
+
+    });
+
+  }
   onFormSubmit(event) {
       event.preventDefault();
-      let height = this.refs.height.value;
+      let height = this.state.height;
       let birthday = this.state.startDate.valueOf();
       let sex = this.state.sex;
       console.log("data imput", height, birthday, sex);
@@ -60,8 +80,8 @@ class SubmitUserSettings extends Component {
         pefMin=  (eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48))*0.5;
         pefMid=  eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48);
       }else{
-        pefMid =  eTo((0.376 * ln(Age)) - (0.012 * Age) - (58.8 / Height) + 5.63);
-        pefMin = (eTo((0.376 * ln(Age)) - (0.012 * Age) - (58.8 / Height) + 5.63))*0.5;
+        pefMid =  eTo((0.376 * ln(age)) - (0.012 * age) - (58.8 / height) + 5.63);
+        pefMin = (eTo((0.376 * ln(age)) - (0.012 * age) - (58.8 / height) + 5.63))*0.5;
 
       } 
 
@@ -101,7 +121,7 @@ class SubmitUserSettings extends Component {
           <label htmlFor="height"> Height </label>
           <div className="input-group">
             <input type="number" min="0" className="form-control"
-              name="height" ref="height" id="height"
+              name="height" ref="height" id="height" value={this.state.height} onChange={this.handleHeightChange.bind(this)}
             />
             <span className="input-group-addon">cm</span>
           </div>
@@ -120,7 +140,7 @@ class SubmitUserSettings extends Component {
         <div className="form-group">
         <label htmlFor="sex"> Sex  </label>
           <div className="input-group">
-            <RadioGroup name="fruit" selectedValue={this.state.sex} onChange={this.setSex.bind(this)}>
+            <RadioGroup name="sex" selectedValue={this.state.sex} onChange={this.setSex.bind(this)}>
               <Radio value="male" />Male
               <Radio value="female" />Female
             </RadioGroup>
@@ -138,6 +158,7 @@ class SubmitUserSettings extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ submitCondition }, dispatch);
 }
+
 
 function mapStateToProps(state) {
     return { currentUser: state.currentUser };
