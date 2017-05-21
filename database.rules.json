@@ -1,6 +1,27 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "pef": {
+      "$user_id": {
+        ".write": "$user_id === auth.uid",
+        ".read": "$user_id === auth.uid"
+      }
+    },
+    "fev1": {
+      "$user_id": {
+        ".write": "$user_id === auth.uid",
+        ".read": "$user_id === auth.uid"
+      },
+    "settings": {
+      "$user_id": {
+        ".write": "$user_id === auth.uid",
+        ".read": "$user_id === auth.uid"
+      }
+    },
+    "users": {
+      "$user_id": {
+        ".write": "$user_id === auth.uid",
+        ".read": "$user_id === auth.uid"
+      }
+    },
   }
 }
