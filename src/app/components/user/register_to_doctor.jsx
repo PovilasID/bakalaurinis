@@ -5,22 +5,14 @@ import {firebase,firebaseDb} from '../../utils/firebase';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-const FLAVOURS = [
-  { label: 'Chocolate', value: 'chocolate' },
-  { label: 'Vanilla', value: 'vanilla' },
-  { label: 'Strawberry', value: 'strawberry' },
-  { label: 'Caramel', value: 'caramel' },
-  { label: 'Cookies and Cream', value: 'cookiescream' },
-  { label: 'Peppermint', value: 'peppermint' },
-];
 
 class RegisterToDoctor extends Component {
     constructor(props) {
         super(props);
         this.state = {
             message: '',
-            allDoctors: FLAVOURS,
-            doctors: [],
+            allDoctors: [],
+            doctors: '',
         };
     }
   componentDidMount(){
@@ -39,8 +31,35 @@ class RegisterToDoctor extends Component {
     console.log('You\'ve selected:', value);
     this.setState({ doctors: value });
   }
-  finalizeRegistration(){
-    console.log("POKEE POKEE");
+  // @ TODO make it work with async
+  finalizeRegistration(e){
+    e.preventDefault();
+
+    const fireRegistrationsRef = firebaseDb.ref("registrations");
+    fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").once('value', snap =>{
+      console.log("PATH rez", Object.keys(snap.val()));
+      console.log("DOCTORS",  this.state.doctors.split(','));
+      let oldList = Object.keys(snap.val());
+      let newList = this.state.doctors.split(',');
+      let wipeList = oldList.filter(x => newList.indexOf(x) == -1);
+      let addList = newList.filter(x => oldList.indexOf(x) == -1);
+      //diff running two cycles id matches with old remove if matches with 
+      console.log("wipeList",  wipeList);
+      console.log("addList",  addList);
+      for (let item of wipeList) {
+        console.log("DESTROYYY",  item);
+        fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").child(item).remove();
+      }
+      for (let item of wipeList) {
+        console.log("SPAMM",  item);
+        //add without deleting
+        fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").update({});
+      }
+      
+      console.log("DONE");
+    });
+
+
 
   }
 
@@ -60,7 +79,7 @@ class RegisterToDoctor extends Component {
                         onChange={this.handleSelectChange.bind(this)} />
                 </div>
               </div>
-              <div><button className="btn btn-primary" onClick={this.finalizeRegistration()}>Register</button></div>
+              <div><button onClick={this.finalizeRegistration.bind(this)} className="btn btn-primary">Register</button></div>
             </div>
 
         );
@@ -68,9 +87,11 @@ class RegisterToDoctor extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        RegisterToDoctor,
-    }, dispatch);
+    return bindActionCreators({ RegisterToDoctor }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(RegisterToDoctor);
+function mapStateToProps(state) {
+    return { currentUser: state.currentUser };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterToDoctor);

@@ -38,9 +38,19 @@ class RoleSettings extends Component {
     });
   }
   setRole(role) {
+    if(this.refs.roleSwitch)
+      this.setState({role: role});
     const fireRoleRef = firebaseDb.ref("settings").child(this.props.currentUser.uid).child("role");
-    this.setState({role: role});
     fireRoleRef.set(role);
+    const fireDoctorListRef = firebaseDb.ref("doctors").child(this.props.currentUser.uid);
+    if (role == "doctor") {
+      var name = this.props.currentUser.displayName ? this.props.currentUser.displayName : this.props.currentUser.email; 
+      fireDoctorListRef.child("name").set(name);
+    } else {
+      fireDoctorListRef.remove();
+    }
+    
+
   }
 
 
@@ -63,7 +73,7 @@ class RoleSettings extends Component {
           <div className="form-group">
           <label htmlFor="role">Role </label>
             <div className="input-group">
-              <RadioGroup name="role" selectedValue={this.state.role} onChange={this.setRole}>
+              <RadioGroup name="role" ref="roleSwitch" selectedValue={this.state.role} onChange={this.setRole}>
                 <Radio value="patient" />Patient
                 <Radio value="doctor" />Doctor
               </RadioGroup>
