@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { changePassword } from '../../actions/firebase_actions';
 import {RadioGroup, Radio} from 'react-radio-group';
+
 import SubmitUserSettings from './submit_user_settings';
+import RegisterToDoctor from './register_to_doctor'
+
 import {firebase,firebaseDb} from '../../utils/firebase';
+
 
 class RoleSettings extends Component {
 
@@ -17,11 +20,11 @@ class RoleSettings extends Component {
     };
   }
 
+
   componentDidMount(){
     const fireRoleRef = firebaseDb.ref("settings").child(this.props.currentUser.uid).child("role");
     fireRoleRef.on('value', snap =>{
       var data = snap.val();
-      console.log("ROLE FIREBAS VAL", data);
       if(data==null){
         this.setState({
           role: "patient",
@@ -40,18 +43,25 @@ class RoleSettings extends Component {
     fireRoleRef.set(role);
   }
 
+
   RoleSettings() {
     if (this.state.role=="patient") {
-      return <SubmitUserSettings />;
+      return (
+        <div id="patientSettings">
+          <SubmitUserSettings />
+          <RegisterToDoctor />
+        </div>);
     }
     return <h1>HA</h1>;
   }
 
     render() {
+
       return (
         <div id="roleSetings">
+          <h3> Select your role </h3> 
           <div className="form-group">
-          <label htmlFor="role"> Role  </label>
+          <label htmlFor="role">Role </label>
             <div className="input-group">
               <RadioGroup name="role" selectedValue={this.state.role} onChange={this.setRole}>
                 <Radio value="patient" />Patient
@@ -69,7 +79,7 @@ class RoleSettings extends Component {
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ changePassword }, dispatch);
+    return bindActionCreators({ RoleSettings }, dispatch);
 }
 
 function mapStateToProps(state) {
