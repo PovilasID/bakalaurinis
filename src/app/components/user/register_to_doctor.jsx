@@ -37,23 +37,57 @@ class RegisterToDoctor extends Component {
 
     const fireRegistrationsRef = firebaseDb.ref("registrations");
     fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").once('value', snap =>{
-      console.log("PATH rez", Object.keys(snap.val()));
-      console.log("DOCTORS",  this.state.doctors.split(','));
-      let oldList = Object.keys(snap.val());
-      let newList = this.state.doctors.split(',');
-      let wipeList = oldList.filter(x => newList.indexOf(x) == -1);
-      let addList = newList.filter(x => oldList.indexOf(x) == -1);
-      //diff running two cycles id matches with old remove if matches with 
-      console.log("wipeList",  wipeList);
-      console.log("addList",  addList);
-      for (let item of wipeList) {
-        console.log("DESTROYYY",  item);
-        fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").child(item).remove();
-      }
-      for (let item of wipeList) {
-        console.log("SPAMM",  item);
-        //add without deleting
-        fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").update({});
+      console.log("PATH rez", snap.val());
+      //console.log("DOCTORS",  this.state.doctors.split(','));
+      // @ TODO fix error on reigstration wipe
+      if(snap.val() != null){
+        let oldList = Object.keys(snap.val());
+        let newList = this.state.doctors.split(',');
+        let wipeList = oldList.filter(x => newList.indexOf(x) == -1);
+        let addList = newList.filter(x => oldList.indexOf(x) == -1);
+        //diff running two cycles id matches with old remove if matches with 
+        console.log("wipeList",  wipeList);
+        console.log("addList",  addList);
+        for (let item of wipeList) {
+          console.log("DESTROYYY",  item);
+          fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").child(item).remove();
+          fireRegistrationsRef.child(item).child("patients").child(this.props.currentUser.uid).remove();
+        }
+        for (let item of addList) {
+          console.log("SPAM",  item);
+          //add without deleting
+          var doctorData = this.state.allDoctors.filter(function ( obj ) {
+              return obj.value === item;
+          })[0];
+          fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").child(item).update({name: doctorData.label});
+          fireRegistrationsRef
+            .child(item)
+            .child("patients")
+            .child(this.props.currentUser.uid)
+            .update(
+              {name: this.props.currentUser.displayName ? this.props.currentUser.displayName : this.props.currentUser.email }
+              );
+
+        }
+      }else{
+        if(this.state.doctors != ''){
+          for (let item of this.state.doctors.split(',')) {
+            console.log("SPAM",  item);
+            //add without deleting
+            var doctorData = this.state.allDoctors.filter(function ( obj ) {
+                return obj.value === item;
+            })[0];
+            console.log("Founc doctor", doctorData);
+            fireRegistrationsRef.child(this.props.currentUser.uid).child("doctors").child(item).set({name: doctorData.label});
+            fireRegistrationsRef
+              .child(item)
+              .child("patients")
+              .child(this.props.currentUser.uid)
+              .update(
+                {name: this.props.currentUser.displayName ? this.props.currentUser.displayName : this.props.currentUser.email }
+                );
+          }
+        }
       }
       
       console.log("DONE");
