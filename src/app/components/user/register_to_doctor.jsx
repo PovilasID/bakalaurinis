@@ -15,7 +15,7 @@ class RegisterToDoctor extends Component {
             doctors: '',
         };
     }
-  componentDidMount(){
+  componentWillMount(){
     const fireDoctorRef = firebaseDb.ref("doctors");
 
     var options = [];
@@ -25,6 +25,18 @@ class RegisterToDoctor extends Component {
          options = options.concat({ value: key, label: data[key].name});
       });
       this.setState({allDoctors: options});
+    });
+    const fireRegistrationsRef = firebaseDb.ref("registrations").child(this.props.currentUser.uid).child("doctors");
+    fireRegistrationsRef.on('value', snap =>{
+      var data = snap.val();
+      var registredDoctors = '';
+      if(data != null){
+        Object.keys(data).map(function(key, index) {
+           registredDoctors = registredDoctors.concat(key+',');
+        });
+        console.log("DOCTORS PRELODE", registredDoctors);
+        this.setState({doctors: registredDoctors});
+      }
     });
   }
   handleSelectChange (value) {
