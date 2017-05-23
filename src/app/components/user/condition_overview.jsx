@@ -9,6 +9,8 @@ import Loading from '../helpers/loading';
 import ConditionChart from './condition_chart';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {DataTable} from 'react-data-components';
+import moment from 'moment';
+
 require('react-bootstrap-table/css/react-bootstrap-table.css')
 
 class ActionFormatter extends React.Component {
@@ -20,7 +22,6 @@ class ActionFormatter extends React.Component {
 }
 
 function actionFormatter(cell, row) {
-    console.log("ACTION DATA", cell);
   return (
         <Link to={'pef/'+cell}>
             <button type="button" className="btn btn-info">Recomendations</button>
@@ -35,56 +36,52 @@ class ConditionOverview extends Component {
 
         this.state = {
             message: '',
-            data: [
-            { pef: 300, date: 'city value', id: 'dfgfgd', },
-            { pef: 500, date: 'city value', id: '0000', }
-
-            ],
+            data: [],
             products:[],
             pefRaw: {},
+            options: {
+                defaultSortName: 'date', 
+                defaultSortOrder: 'desc'
+            },
         };
     }
 
 
     componentDidMount(){
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
+            var data = snap.val();
             console.log("PEF in overview", snap.val());
-            this.setState({pefRaw: snap.val()
+            this.setState({pefRaw: snap.val()});
+            var pefDataRaw = Object.keys(data).map(function (key) {
+                return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:ss'), pef: Number(data[key].pef), id: key};
             });
+            this.setState({data: pefDataRaw});
+            console.log("PEF table", pefDataRaw);
         });
     }
     renderRecomendations(){
     return (
         <Link to="pef/booo">
             <button type="button" className="btn btn-info">Recomendations</button>
-            </Link>
-            );
+        </Link>
+        );
     }
 
-
+    // @ TODO add delete add color lights add lines or dot coloring add difference chart
     render() {
         if (!this.props.currentUser ) {
             return <Loading />;
         }
-        var products = [{
-              id: 1,
-              name: "Product1",
-              price: 120
-          }, {
-              id: 2,
-              name: "Product2",
-              price: 80
-          }];
         return (
 
             <div className="col-md-12">
                 
                 <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
 
-                  <BootstrapTable data={this.state.data} striped hover pagination>
-                      <TableHeaderColumn dataSort={ true } dataField='pef'>Product ID</TableHeaderColumn>
-                      <TableHeaderColumn dataSort={ true } dataField='date'>Product Name</TableHeaderColumn>
-                      <TableHeaderColumn isKey dataField='id'  dataFormat={ actionFormatter }>Product Price</TableHeaderColumn>
+                  <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
+                      <TableHeaderColumn dataSort={ true } dataField='pef'>PEF value</TableHeaderColumn>
+                      <TableHeaderColumn dataSort={ true } dataField='date'>Date and time</TableHeaderColumn>
+                      <TableHeaderColumn isKey dataField='id'  dataFormat={ actionFormatter }>Recomendations</TableHeaderColumn>
                   </BootstrapTable>
             </div>
         );
