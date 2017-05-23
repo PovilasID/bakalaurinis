@@ -35,7 +35,7 @@ class RoleSettings extends Component {
           role: data,
         });
       }
-    });
+    });    
   }
   setRole(role) {
     if(this.refs.roleSwitch)

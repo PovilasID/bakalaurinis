@@ -6,8 +6,8 @@ import { submitCondition } from '../../actions/firebase_actions';
 
 import Loading from '../helpers/loading';
 import SubmitConditionData from './submit_condition_data';
-import ConditionChart from './condition_chart';
 import ConditionSummary from './condition_summary';
+import ConditionOverview from './condition_overview'
 
 class Dashboard extends Component {
 
@@ -20,7 +20,6 @@ class Dashboard extends Component {
             data: [],
         };
     }
-
 
     render() {
         if (!this.props.currentUser ) {
@@ -37,7 +36,8 @@ class Dashboard extends Component {
                     <ConditionSummary />
                 </div>
                 <div className="col-md-12">
-                    <ConditionChart />
+
+                    <ConditionOverview patient={this.props.currentUser.uid} />
                 </div>
             </div>
         );

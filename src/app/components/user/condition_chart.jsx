@@ -24,6 +24,7 @@ class ConditionChart extends Component {
         },
         legend: 'none',
         curveType: 'function',
+        pointSize: 7,
 
       },
       data: [
@@ -43,8 +44,8 @@ class ConditionChart extends Component {
        if (a[0] > b[0]) return 1;
        return 0;
      }
-    console.log("USER ID IN CHARTS", this.props.currentUser.uid);
-    firebaseDb.ref("pef").child(this.props.currentUser.uid).on('value', snap =>{
+    console.log("USER ID IN CHARTS", this.props.patient);
+    firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
       var data = snap.val();
       var chartData = [['Date', 'PEF']];
       var chartDataRaw = Object.keys(data).map(function (key) {
