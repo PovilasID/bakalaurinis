@@ -43,6 +43,8 @@ class RecomendationItem extends Component {
                   </div>
                   <div className="panel-body">
                     {this.props.recomendationItem.text}
+                    <br />
+                    <small><cite>{moment(this.props.recomendationItem.timestamp).format('YYYY-MM-DD HH:ss')}</cite></small>
                   </div>
                 </div>
             </div>
