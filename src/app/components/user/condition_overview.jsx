@@ -11,6 +11,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {DataTable} from 'react-data-components';
 import moment from 'moment';
 
+
 require('react-bootstrap-table/css/react-bootstrap-table.css')
 
 class ActionFormatter extends React.Component {
@@ -40,11 +41,11 @@ class ConditionOverview extends Component {
     }
 
 
-    componentDidMount(){
+    componentWillMount(){
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
             console.log("PEF in overview", snap.val());
-            this.setState({pefRaw: snap.val()});
+            this.setState({pefRaw: data});
             var pefDataRaw = Object.keys(data).map(function (key) {
                 return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:ss'), pef: Number(data[key].pef), id: key};
             });
@@ -60,13 +61,7 @@ class ConditionOverview extends Component {
             </Link>
         );
     }
-    renderRecomendations(){
-    return (
-        <Link to="pef/booo">
-            <button type="button" className="btn btn-info">Recomendations</button>
-        </Link>
-        );
-    }
+
 
     // @ TODO add delete add color lights add lines or dot coloring add difference chart
     render() {
@@ -76,9 +71,8 @@ class ConditionOverview extends Component {
         return (
 
             <div className="col-md-12">
-                
-                <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
 
+                <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
                   <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
                       <TableHeaderColumn dataSort={ true } dataField='pef'>PEF value</TableHeaderColumn>
                       <TableHeaderColumn dataSort={ true } dataField='date'>Date and time</TableHeaderColumn>

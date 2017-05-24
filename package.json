@@ -80,8 +80,10 @@
     "react-select": "^1.0.0-rc.4",
     "react-selectize": "^2.1.0",
     "react-transition-group": "^1.1.1",
+    "recharts": "^1.0.0-alpha.0",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "victory": "^0.19.1"
   }
 }

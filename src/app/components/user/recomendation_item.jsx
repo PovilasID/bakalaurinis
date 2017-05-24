@@ -37,7 +37,7 @@ class RecomendationItem extends Component {
         console.log("PEF Details user ID", this.props.currentUser);
         return (
             <div className="col-md-12">
-                <div className={(this.props.currentUser.uid == this.props.recomendationItem.author.uid)? "panel panel-primary text-right" : "panel panel-defult" }>
+                <div className={(this.props.currentUser.uid == this.props.recomendationItem.author.uid)? "panel panel-primary text-right" : "panel panel-default" }>
                   <div className="panel-heading">
                     <h3 className="panel-title">{(this.props.recomendationItem.author.name)? this.props.recomendationItem.author.name : this.props.recomendationItem.author.email}</h3>
                   </div>

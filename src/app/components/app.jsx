@@ -17,11 +17,13 @@ class App extends Component {
         this.logOut = this.logOut.bind(this);
     }
     getRole(uid) {
-        firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
+        var theRole = firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
             console.log("ROLE", snap.val()== "doctor");
             //this.setState({role: snap.val()});
-            return snap.val(); 
+            theRole = snap.val();
+            return snap.val();
         });
+        return theRole;
     }
 
     logOut() {
@@ -37,8 +39,7 @@ class App extends Component {
         if (currentUser && currentUser.uid ) {
            // var userRole = getRole(currentUser.uid);
            // var dashboardURL = (userRole == "doctor")? '/doctors_dashboard' : '/dashboard'  ;
-           console.log("THE RPOLE",this.getRole(currentUser.uid));
-           
+           console.log("RETURN OF FIRE DB",this.getRole(currentUser.uid));
                 return (
                     <li className="dropdown">
                         <a
@@ -48,7 +49,7 @@ class App extends Component {
                             {currentUser.email} <span className="caret" /></a>
                         <ul className="dropdown-menu">
                             <li><Link to="/profile">Profile</Link></li>
-                            <li><Link to={(this.getRole(currentUser.uid) == "doctor")? '/doctors_dashboard' : '/dashboard'}>Dashboard</Link></li>
+                            <li><Link to={(false)? '/doctors_dashboard' : '/dashboard'}>Dashboard</Link></li>
                             <li role="separator" className="divider" />
                             <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
                         </ul>

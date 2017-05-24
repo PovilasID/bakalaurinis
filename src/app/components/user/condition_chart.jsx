@@ -5,9 +5,6 @@ import { submitCondition } from '../../actions/firebase_actions';
 import {firebase,firebaseDb} from '../../utils/firebase';
 import { Chart } from 'react-google-charts';
 
-
-
-
 class ConditionChart extends Component {
 
   constructor(props) {
@@ -35,7 +32,6 @@ class ConditionChart extends Component {
     };
   }
 
-  //@ TODO code for no data
 
   componentDidMount(){
 
@@ -45,6 +41,7 @@ class ConditionChart extends Component {
        return 0;
      }
     console.log("USER ID IN CHARTS", this.props.patient);
+    console.log("PEF PROPS in CHARTS", this.props.pefRaw);
     firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
       var data = snap.val();
       console.log("PEF DATA IN CHART", data);
@@ -56,23 +53,22 @@ class ConditionChart extends Component {
       chartDataRaw = chartDataRaw.sort(Comparator)
        this.setState({
         data: chartData.concat(chartDataRaw)
-      })
+      });
       console.log("STATE FORMAT", this.state.data);
       console.log("CONCAT RESULTS", chartData.concat(chartDataRaw) );
       console.log("CHART ARRAY DEFAULTS", this.state.data);
       console.log("TEST GOOGLE DATE FORMAT", new Date(2000, 8, 5));
-
     });
   }
 
 
     render() {
       return (
+
       <Chart
         chartType="LineChart"
         data={this.state.data}
         options={this.state.options}
-        graph_id="LineChart"
         width="100%"
         height="400px"
         legend_toggle
