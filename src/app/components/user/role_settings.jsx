@@ -62,7 +62,6 @@ class RoleSettings extends Component {
           <RegisterToDoctor />
         </div>);
     }
-    return <h1>HA</h1>;
   }
 
     render() {

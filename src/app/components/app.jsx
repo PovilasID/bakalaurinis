@@ -16,14 +16,16 @@ class App extends Component {
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
     }
+    componentDidMount(){
+        console.log("USER LIVE", this.props.currentUser)
+
+    }
     getRole(uid) {
-        var theRole = firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
+        firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
             console.log("ROLE", snap.val()== "doctor");
             //this.setState({role: snap.val()});
-            theRole = snap.val();
             return snap.val();
         });
-        return theRole;
     }
 
     logOut() {
@@ -31,6 +33,18 @@ class App extends Component {
       // reload props from reducer
             this.props.fetchUser();
         });
+    }
+
+    renderNav(currentUser){
+        
+        var role = firebaseDb.ref("settings").child(currentUser.uid).child("role").once('value', snap =>{
+            console.log("ROLE", snap.val()== "doctor");
+            role = snap.val();
+        });
+        console.log("ROLE", role);
+        return (
+            <li><Link to="/dashboard"> Dashboard</Link></li>
+            );
     }
 
     renderUserMenu(currentUser) {
@@ -82,9 +96,10 @@ class App extends Component {
                         </div>
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                             <ul className="nav navbar-nav">
-                                <li><Link to="/"> Home</Link></li>
-                ,
-              </ul>
+                                
+                                {(this.props.currentUser)? this.renderNav(this.props.currentUser): <li><Link to="/"> Home</Link></li>}
+                
+                            </ul>
                             <ul className="nav navbar-nav navbar-right">
                                 { this.renderUserMenu(this.props.currentUser) }
                             </ul>
