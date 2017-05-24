@@ -3,12 +3,22 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchUser, logoutUser } from '../actions/firebase_actions';
+import {firebase,firebaseDb} from '../utils/firebase';
+
+function getRole(uid) {
+    firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
+        console.log("ROLE", snap.val());
+        return snap.val(); 
+    });
+}
 
 class App extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            role: 'patient',
+        };
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
     }
@@ -22,22 +32,26 @@ class App extends Component {
 
     renderUserMenu(currentUser) {
     // if current user exists and user id exists than make user navigation
-        if (currentUser && currentUser.uid) {
-            return (
-                <li className="dropdown">
-                    <a
-                      href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-                      aria-haspopup="true" aria-expanded="false"
-                    >
-                        {currentUser.email} <span className="caret" /></a>
-                    <ul className="dropdown-menu">
-                        <li><Link to="/profile">Profile</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                        <li role="separator" className="divider" />
-                        <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
-                    </ul>
-                </li>
-            );
+
+        if (currentUser && currentUser.uid ) {
+            let userRole = getRole(currentUser.uid);
+            let dashboardURL = (userRole == "doctor")? '/dashboard' :'/doctors_dashboard' ;
+           
+                return (
+                    <li className="dropdown">
+                        <a
+                          href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
+                          aria-haspopup="true" aria-expanded="false"
+                        >
+                            {currentUser.email} <span className="caret" /></a>
+                        <ul className="dropdown-menu">
+                            <li><Link to="/profile">Profile</Link></li>
+                            <li><Link to={dashboardURL}>Dashboard</Link></li>
+                            <li role="separator" className="divider" />
+                            <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
+                        </ul>
+                    </li>
+                );
         } else {
             return [
                 <li key={1}><Link to="/login">Login</Link></li>,
