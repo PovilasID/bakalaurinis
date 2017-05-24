@@ -52,24 +52,24 @@ class ConditionSummary extends Component {
         if(lastPEF[1] <= norms["min"]){
           console.log("BELOW MIN");
           this.setState({
-            summaryText: "WARNING! Your last PEF meassument was: "+lastPEF[1]+
-            " Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.",
+            summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[1]} </span></p>
+            <p>Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.</p></div>,
           });
 
         }else if (lastPEF[1] > norms["min"] && lastPEF[1] < norms["mid"]) {
 
           this.setState({
 
-            summaryText: "CAUSION! Your last PEF meassument was: "+lastPEF[1]+
-            " Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress."+
-            "Please be careful.",
+            summaryText: <div><h2><span className="label label-warning">CAUSION!</span></h2> <p>Your last PEF meassument was <span className="label label-warning"> {lastPEF[1]} </span></p>
+            <p>Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress.
+            Please be careful.</p></div>,
           });
         }else if (lastPEF[1] >= norms["mid"] ) {
 
           this.setState({
-            summaryText: "Congradulations! Your last PEF meassument was: "+lastPEF[1]+
-            " Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress."+
-            "Enjoy your day.",
+            summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last PEF meassument was <span className="label label-success">{lastPEF[1]}</span></p>
+            <p>Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress.
+            Enjoy your day.</p></div>,
           });
         }
         console.log("CALL NT NULL", snap.val()["pefNorms"]["min"]);
