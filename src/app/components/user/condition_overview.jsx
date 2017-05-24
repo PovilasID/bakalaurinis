@@ -21,13 +21,6 @@ class ActionFormatter extends React.Component {
   }
 }
 
-function actionFormatter(cell, row) {
-  return (
-        <Link to={'pef/'+cell}>
-            <button type="button" className="btn btn-info">Recomendations</button>
-        </Link>
-    );
-}
 class ConditionOverview extends Component {
 
     constructor(props) {
@@ -47,7 +40,7 @@ class ConditionOverview extends Component {
     }
 
 
-    componentWillMount(){
+    componentDidMount(){
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
             console.log("PEF in overview", snap.val());
@@ -58,6 +51,21 @@ class ConditionOverview extends Component {
             this.setState({data: pefDataRaw});
             console.log("PEF table", pefDataRaw);
         });
+    }
+
+    actionFormatter(cell, row) {
+      return (
+            <Link to={'pef/'+this.props.patient+'/'+cell}>
+                <button type="button" className="btn btn-info">Recomendations</button>
+            </Link>
+        );
+    }
+    renderRecomendations(){
+    return (
+        <Link to="pef/booo">
+            <button type="button" className="btn btn-info">Recomendations</button>
+        </Link>
+        );
     }
 
     // @ TODO add delete add color lights add lines or dot coloring add difference chart
@@ -74,7 +82,7 @@ class ConditionOverview extends Component {
                   <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
                       <TableHeaderColumn dataSort={ true } dataField='pef'>PEF value</TableHeaderColumn>
                       <TableHeaderColumn dataSort={ true } dataField='date'>Date and time</TableHeaderColumn>
-                      <TableHeaderColumn isKey dataField='id'  dataFormat={ actionFormatter }>Recomendations</TableHeaderColumn>
+                      <TableHeaderColumn isKey dataField='id'  dataFormat={ this.actionFormatter.bind(this) }>Recomendations</TableHeaderColumn>
                   </BootstrapTable>
             </div>
         );

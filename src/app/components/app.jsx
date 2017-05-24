@@ -5,12 +5,6 @@ import { bindActionCreators } from 'redux';
 import { fetchUser, logoutUser } from '../actions/firebase_actions';
 import {firebase,firebaseDb} from '../utils/firebase';
 
-function getRole(uid) {
-    firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
-        console.log("ROLE", snap.val());
-        return snap.val(); 
-    });
-}
 
 class App extends Component {
 
@@ -21,6 +15,13 @@ class App extends Component {
         };
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
+    }
+    getRole(uid) {
+        firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
+            console.log("ROLE", snap.val()== "doctor");
+            //this.setState({role: snap.val()});
+            return snap.val(); 
+        });
     }
 
     logOut() {
@@ -34,8 +35,9 @@ class App extends Component {
     // if current user exists and user id exists than make user navigation
 
         if (currentUser && currentUser.uid ) {
-            let userRole = getRole(currentUser.uid);
-            let dashboardURL = (userRole == "doctor")? '/dashboard' :'/doctors_dashboard' ;
+           // var userRole = getRole(currentUser.uid);
+           // var dashboardURL = (userRole == "doctor")? '/doctors_dashboard' : '/dashboard'  ;
+           console.log("THE RPOLE",this.getRole(currentUser.uid));
            
                 return (
                     <li className="dropdown">
@@ -46,7 +48,7 @@ class App extends Component {
                             {currentUser.email} <span className="caret" /></a>
                         <ul className="dropdown-menu">
                             <li><Link to="/profile">Profile</Link></li>
-                            <li><Link to={dashboardURL}>Dashboard</Link></li>
+                            <li><Link to={(this.getRole(currentUser.uid) == "doctor")? '/doctors_dashboard' : '/dashboard'}>Dashboard</Link></li>
                             <li role="separator" className="divider" />
                             <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
                         </ul>

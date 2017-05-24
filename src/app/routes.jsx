@@ -23,7 +23,7 @@ export default (
         <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
         <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
         <Route path="/doctors_dashboard" component={DoctorsDashboard} onEnter={requireAuth} />
-        <Route path="/pef/:id" component={PEFDetails} onEnter={requireAuth} />
+        <Route path="/pef/:userId/:pefId" component={PEFDetails} onEnter={requireAuth} />
 
     </Route>
 

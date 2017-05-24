@@ -6,12 +6,11 @@ import {Link} from 'react-router';
 import { fetchUser } from '../../actions/firebase_actions';
 
 import Loading from '../helpers/loading';
-import Recomendations from './recomendations';
 import moment from 'moment';
 
 
 
-class PEFDetails extends Component {
+class RecomendationItem extends Component {
 
     constructor(props) {
         super(props);
@@ -20,21 +19,15 @@ class PEFDetails extends Component {
 
         this.state = {
             message: '',
-            pefTtitle: '',
         };
     }
     componentDidMount(){
-                    console.log("USR NOW", this.props.currentUser);
+                    console.log("USR NOW RECOMEDNATION ITEM", this.props.currentUser);
+                    console.log("RECOMEDNATION ITEM", this.props);
 
-      console.log("PEF ID", this.props.params);
-        firebaseDb.ref("pef").child(this.props.params.userId).child(this.props.params.pefId).once('value', snap =>{
-            var data = snap.val();
-            this.setState({pefTtitle: "PEF "+data.pef+" l/min on "+moment(data.timestamp).format('YYYY-MM-DD HH:ss')});
-            console.log("PEF DATA", data.pef);
-        });
-      
+
+
     }
-
 
 
     render() {
@@ -44,8 +37,14 @@ class PEFDetails extends Component {
         console.log("PEF Details user ID", this.props.currentUser);
         return (
             <div className="col-md-12">
-            <h1>{this.state.pefTtitle}</h1>
-            <Recomendations pefId={this.props.params.pefId} />
+                <div className={(this.props.currentUser.uid == this.props.recomendationItem.author.uid)? "panel panel-primary text-right" : "panel panel-defult" }>
+                  <div className="panel-heading">
+                    <h3 className="panel-title">{(this.props.recomendationItem.author.name)? this.props.recomendationItem.author.name : this.props.recomendationItem.author.email}</h3>
+                  </div>
+                  <div className="panel-body">
+                    {this.props.recomendationItem.text}
+                  </div>
+                </div>
             </div>
         );
     }
@@ -61,4 +60,4 @@ function mapStateToProps(state) {
     return { currentUser: state.currentUser };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PEFDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(RecomendationItem);
