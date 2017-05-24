@@ -10,6 +10,7 @@ import UserProfile from './components/user/profile';
 import Dashboard from './components/user/dashboard';
 import ResetPassword from './components/user/reset_password';
 import PEFDetails from './components/user/pef_details';
+import DoctorsDashboard from './components/user/doctors_dashboard';
 import requireAuth from './utils/authenticated';
 
 export default (
@@ -21,6 +22,7 @@ export default (
         <Route path="/reset" component={ResetPassword} />
         <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
         <Route path="/dashboard" component={Dashboard} onEnter={requireAuth} />
+        <Route path="/doctors_dashboard" component={DoctorsDashboard} onEnter={requireAuth} />
         <Route path="/pef/:id" component={PEFDetails} onEnter={requireAuth} />
 
     </Route>

@@ -47,6 +47,8 @@ class ConditionChart extends Component {
     console.log("USER ID IN CHARTS", this.props.patient);
     firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
       var data = snap.val();
+      console.log("PEF DATA IN CHART", data);
+      console.log("PEF RAW DATA FROM PROPS", this.props);
       var chartData = [['Date', 'PEF']];
       var chartDataRaw = Object.keys(data).map(function (key) {
         return [new Date(data[key].timestamp), Number(data[key].pef)]; 

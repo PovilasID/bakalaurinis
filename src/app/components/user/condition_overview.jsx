@@ -47,7 +47,7 @@ class ConditionOverview extends Component {
     }
 
 
-    componentDidMount(){
+    componentWillMount(){
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
             console.log("PEF in overview", snap.val());
@@ -58,13 +58,6 @@ class ConditionOverview extends Component {
             this.setState({data: pefDataRaw});
             console.log("PEF table", pefDataRaw);
         });
-    }
-    renderRecomendations(){
-    return (
-        <Link to="pef/booo">
-            <button type="button" className="btn btn-info">Recomendations</button>
-        </Link>
-        );
     }
 
     // @ TODO add delete add color lights add lines or dot coloring add difference chart
