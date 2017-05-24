@@ -38,10 +38,14 @@ class RecomendationsFeed extends Component {
         firebaseDb.ref("recomendations").child(this.props.pefId).on('value', snap => {
             var data = snap.val();
             //this.setState({allRecomendations: data});
-            recomendationsList = Object.keys(data).map(function (key) {
-                console.log("Recomendation item", data[key]);
-                return (<div><RecomendationItem key={key} recomendationItem={ data[key] }/></div>);
-            });
+            if(data){
+                recomendationsList = Object.keys(data).map(function (key) {
+                    console.log("Recomendation item", data[key]);
+                    return (<div><RecomendationItem key={key} recomendationItem={ data[key] }/></div>);
+                });
+            }else{
+                recomendationsList =  <div class="panel panel-default"><div class="panel-body"> There are no recomendations for this </div></div>;
+            }
             this.setState({allRecomendations: recomendationsList});
             console.log("ALL RECOMENDATIONS",this.state.allRecomendations);
         });
@@ -56,7 +60,7 @@ class RecomendationsFeed extends Component {
         console.log("PEF Details user ID", this.props.currentUser);
         return (
             <div className="col-md-12">
-            {(this.state.allRecomendations)? this.state.allRecomendations:  <div class="panel panel-default"><div class="panel-body"> There are no recomendations for this </div></div> }
+            {this.state.allRecomendations }
             </div>
         );
     }

@@ -36,12 +36,6 @@ class App extends Component {
     }
 
     renderNav(currentUser){
-        
-        var role = firebaseDb.ref("settings").child(currentUser.uid).child("role").once('value', snap =>{
-            console.log("ROLE", snap.val()== "doctor");
-            role = snap.val();
-        });
-        console.log("ROLE", role);
         return (
             <li><Link to="/dashboard"> Dashboard</Link></li>
             );
@@ -53,7 +47,7 @@ class App extends Component {
         if (currentUser && currentUser.uid ) {
            // var userRole = getRole(currentUser.uid);
            // var dashboardURL = (userRole == "doctor")? '/doctors_dashboard' : '/dashboard'  ;
-           console.log("RETURN OF FIRE DB",this.getRole(currentUser.uid));
+           //console.log("RETURN OF FIRE DB",this.getRole(currentUser.uid));
                 return (
                     <li className="dropdown">
                         <a
@@ -63,7 +57,7 @@ class App extends Component {
                             {currentUser.email} <span className="caret" /></a>
                         <ul className="dropdown-menu">
                             <li><Link to="/profile">Profile</Link></li>
-                            <li><Link to={(false)? '/doctors_dashboard' : '/dashboard'}>Dashboard</Link></li>
+                            <li><Link to="/doctors_dashboard">Dashboard</Link></li>
                             <li role="separator" className="divider" />
                             <li><Link to="/logout" onClick={this.logOut}>Logout</Link></li>
                         </ul>

@@ -132,7 +132,6 @@ class SubmitUserSettings extends Component {
               dateFormat="YYYY-MM-DD"
               selected={this.state.startDate}
               showYearDropdown
-              todayButton="Today"
               onChange={this.handleDateTimeChange}
           />
         </div>
