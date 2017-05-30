@@ -12,20 +12,29 @@ class App extends Component {
         super(props);
         this.state = {
             role: 'patient',
+            currentUserUID: '',
         };
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
+        this.getRole = this.getRole.bind(this);
+
+
     }
-    componentDidMount(){
-        console.log("USER LIVE", this.props.currentUser)
+    componentWillMount(){
+        console.log("USER LIVE", this.props.currentUser);
+        if (this.props.currentUser) {
+            console.log("USER ALIVE");
+        } else {
+            console.log("USER DEAD");
+        }
 
     }
     getRole(uid) {
-        firebaseDb.ref("settings").child(uid).child("role").once('value', snap =>{
+        let roleState = firebaseDb.ref("settings").child(uid).child("role").on('value', snap =>{
             console.log("ROLE", snap.val()== "doctor");
             //this.setState({role: snap.val()});
-            return snap.val();
         });
+        return roleState;
     }
 
     logOut() {
@@ -36,15 +45,17 @@ class App extends Component {
     }
 
     renderNav(currentUser){
+        //this.setState({currentUserUID: currentUser.uid});
+       // this.getRole(currentUser.uid);
         return (
-            <li><Link to="/dashboard"> Dashboard</Link></li>
+            <li><Link to={(this.props.currentUser.role == 'doctor')? '/doctors_dashboard' : '/dashboard'}> Dashboard</Link></li>
             );
     }
 
     renderUserMenu(currentUser) {
     // if current user exists and user id exists than make user navigation
 
-        if (currentUser && currentUser.uid ) {
+        if (currentUser && currentUser.uid) {
            // var userRole = getRole(currentUser.uid);
            // var dashboardURL = (userRole == "doctor")? '/doctors_dashboard' : '/dashboard'  ;
            //console.log("RETURN OF FIRE DB",this.getRole(currentUser.uid));
@@ -52,8 +63,7 @@ class App extends Component {
                     <li className="dropdown">
                         <a
                           href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-                          aria-haspopup="true" aria-expanded="false"
-                        >
+                          aria-haspopup="true" aria-expanded="false">
                             {currentUser.email} <span className="caret" /></a>
                         <ul className="dropdown-menu">
                             <li><Link to="/profile">Profile</Link></li>
@@ -72,6 +82,9 @@ class App extends Component {
     }
 
     render() {
+        if (this.props.currentUser ) {
+            //this.getRole(this.props.currentUser.uid);
+        }
         return (
             <div>
                 <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
@@ -90,7 +103,7 @@ class App extends Component {
                         </div>
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                             <ul className="nav navbar-nav">
-                                
+
                                 {(this.props.currentUser)? this.renderNav(this.props.currentUser): <li><Link to="/"> Home</Link></li>}
                 
                             </ul>

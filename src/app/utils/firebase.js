@@ -73,8 +73,16 @@ const FireBaseTools = {
    */
     fetchUser: () => new Promise((resolve, reject) => {
         const unsub = firebaseAuth.onAuthStateChanged((user) => {
-            unsub();
-            resolve(user);
+          unsub();
+
+          firebaseDb.ref("settings").child(user.uid).child("role").on('value', snap =>{
+              console.log("ROLE", snap.val()== "doctor");
+              //this.setState({role: snap.val()});
+              user['role'] = snap.val()? snap.val():'patient';
+              resolve(user);
+          });
+                       
+
             console.log("RAW USER", user);
         }, (error) => {
             reject(error);

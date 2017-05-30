@@ -7,6 +7,8 @@ import SubmitUserSettings from './submit_user_settings';
 import RegisterToDoctor from './register_to_doctor'
 
 import {firebase,firebaseDb} from '../../utils/firebase';
+import { fetchUser } from '../../actions/firebase_actions';
+import App from '../app';
 
 
 class RoleSettings extends Component {
@@ -49,7 +51,7 @@ class RoleSettings extends Component {
     } else {
       fireDoctorListRef.remove();
     }
-    
+    document.location.reload(true);
 
   }
 
