@@ -52,7 +52,6 @@ class RoleSettings extends Component {
       fireDoctorListRef.remove();
     }
     document.location.reload(true);
-
   }
 
 

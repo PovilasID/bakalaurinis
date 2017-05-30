@@ -12,7 +12,6 @@ class App extends Component {
         super(props);
         this.state = {
             role: 'patient',
-            currentUserUID: '',
         };
         this.props.fetchUser();
         this.logOut = this.logOut.bind(this);
@@ -56,9 +55,6 @@ class App extends Component {
     // if current user exists and user id exists than make user navigation
 
         if (currentUser && currentUser.uid) {
-           // var userRole = getRole(currentUser.uid);
-           // var dashboardURL = (userRole == "doctor")? '/doctors_dashboard' : '/dashboard'  ;
-           //console.log("RETURN OF FIRE DB",this.getRole(currentUser.uid));
                 return (
                     <li className="dropdown">
                         <a

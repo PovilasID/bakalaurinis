@@ -46,7 +46,7 @@ class ConditionSummary extends Component {
           console.log("BELOW MIN");
           this.setState({
             summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[1]} </span></p>
-            <p>Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.</p></div>,
+            <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
           });
 
         }else if (lastPEF[1] > this.state.norms["min"] && lastPEF[1] < this.state.norms["mid"]) {
@@ -75,7 +75,7 @@ class ConditionSummary extends Component {
       console.log("last pEF", lastPEF[1]);
     });
 
-    firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
+    firebaseDb.ref("settings").child(this.props.currentUser.uid).child('pefNorms').on('value', snap =>{
       if(snap.val() != null){
         var norms = snap.val()["pefNorms"];
         this.setState({norms: norms});

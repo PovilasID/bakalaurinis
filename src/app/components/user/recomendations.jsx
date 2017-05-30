@@ -21,6 +21,7 @@ class Recomendations extends Component {
 
         this.state = {
             message: '',
+            reply: '',
         };
     }
     componentDidMount(){
@@ -38,8 +39,8 @@ class Recomendations extends Component {
         console.log("PEF Details user ID", this.props.currentUser);
         return (
             <div className="col-md-12">
-            <RecomendationsFeed pefId={this.props.pefId}/>
-            <RecomendationSumbit pefId={this.props.pefId}/>
+            <RecomendationsFeed onCitation={(data)=> this.setState({reply: data})} pefId={this.props.pefId}/>
+            <RecomendationSumbit reply={this.state.reply} pefId={this.props.pefId}/>
             </div>
         );
     }

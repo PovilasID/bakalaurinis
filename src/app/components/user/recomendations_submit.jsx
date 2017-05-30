@@ -8,8 +8,6 @@ import { fetchUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import moment from 'moment';
 
-
-
 class RecomendationsSubmit extends Component {
 
     constructor(props) {
@@ -19,6 +17,7 @@ class RecomendationsSubmit extends Component {
 
         this.state = {
             message: '',
+            text: '',
         };
     }
     componentDidMount(){
@@ -54,11 +53,22 @@ class RecomendationsSubmit extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        console.log("NEW PROPS?", nextProps);
+        if (nextProps.reply) {
+            var modifiedText = "> "+nextProps.reply.text.split('\n').map(s => `> ${s}`).join('\n');
+            this.setState({text: modifiedText+"\n"+this.state.text });
+        }
+    }
+    handleTyping(e){
+        this.setState({text: e.target.value});
+    }
+
     render() {
         if (!this.props.currentUser ) {
             return <Loading />;
         }
-        console.log("PEF Details user ID", this.props.currentUser);
+        console.log("REPLAY STATE", this.props.reply);
         return (
             <div className="col-md-12">
                 <form id="frmProfile" role="form" onSubmit={this.onFormSubmit.bind(this)}>
@@ -67,7 +77,7 @@ class RecomendationsSubmit extends Component {
                         <label htmlFor="recomendation">Recomendation: </label>
                         <textarea 
                         className="form-control" rows="5" id="recomendation" 
-                        ref="recomendation" name="recomendation"></textarea>
+                        ref="recomendation" name="recomendation" value={this.state.text}  onChange={this.handleTyping.bind(this)}></textarea>
 
                     </div>
                     

@@ -31,33 +31,39 @@ class RecomendationsFeed extends Component {
         this.state = {
             message: '',
             allRecomendations: [],
+            reply:'',
         };
+
     }
+    handleUpdate (data) { //this.props.onUpdate(data);
+    console.log(data); }
     componentDidMount(){
         var recomendationsList = '';
+
+        
+        var that = this;
+
         firebaseDb.ref("recomendations").child(this.props.pefId).on('value', snap => {
             var data = snap.val();
-            //this.setState({allRecomendations: data});
+
             if(data){
                 recomendationsList = Object.keys(data).map(function (key) {
-                    console.log("Recomendation item", data[key]);
-                    return (<div><RecomendationItem key={key} recomendationItem={ data[key] }/></div>);
+                    return (<div><RecomendationItem key={key} onUpdate={(data) => that.props.onCitation(data)} recomendationItem={ data[key] }/></div>);
                 });
             }else{
                 recomendationsList =  <div class="panel panel-default"><div class="panel-body"> There are no recomendations for this </div></div>;
             }
-            this.setState({allRecomendations: recomendationsList});
-            console.log("ALL RECOMENDATIONS",this.state.allRecomendations);
+            that.setState({allRecomendations: recomendationsList});
         });
-
     }
+
 
 
     render() {
         if (!this.props.currentUser ) {
             return <Loading />;
         }
-        console.log("PEF Details user ID", this.props.currentUser);
+        console.log("PEF Details user ID", this.state.reply);
         return (
             <div className="col-md-12">
             {this.state.allRecomendations }
