@@ -56,7 +56,7 @@ class RecomendationsSubmit extends Component {
     componentWillReceiveProps(nextProps){
         console.log("NEW PROPS?", nextProps);
         if (nextProps.reply) {
-            var modifiedText = "> "+nextProps.reply.text.split('\n').map(s => `> ${s}`).join('\n');
+            var modifiedText = nextProps.reply.text.split('\n').map(s => `> ${s}`).join('\n');
             this.setState({text: modifiedText+"\n"+this.state.text });
         }
     }
