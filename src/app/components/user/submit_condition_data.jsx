@@ -73,7 +73,7 @@ class SubmitConditionData extends Component {
           </div>
         </div>
         <div className="form-group">
-          <Datetime value={this.state.startDate} onChange={(date) => this.setState({startDate:date})} open={false} />
+          <Datetime value={this.state.startDate} dateFormat="YYYY-MM-DD" timeFormat="HH:mm"  onChange={(date) => this.setState({startDate:date})} />
         </div>
         <button type="submit" className="btn btn-primary">Sumbmit</button>
       </form>

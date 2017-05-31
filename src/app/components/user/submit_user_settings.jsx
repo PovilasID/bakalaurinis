@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { submitCondition } from '../../actions/firebase_actions';
 import {firebase,firebaseDb} from '../../utils/firebase';
-import DatePicker from 'react-datepicker';
-//import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import {RadioGroup, Radio} from 'react-radio-group';
+import Datetime from 'react-datetime';
 
+import 'react-datetime/css/react-datetime.css';
 
 //@ TODO add pull form db if set and two collumns
 class SubmitUserSettings extends Component {
@@ -127,13 +127,8 @@ class SubmitUserSettings extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="birthday"> Birthday  </label>
-          <DatePicker
-              className="birthday"
-              dateFormat="YYYY-MM-DD"
-              selected={this.state.startDate}
-              showYearDropdown
-              onChange={this.handleDateTimeChange}
-          />
+          <Datetime className="birthday" value={this.state.startDate} dateFormat="YYYY-MM-DD" timeFormat={false}  onChange={(date) => this.setState({startDate:date})} />
+
         </div>
         <div className="form-group">
         <label htmlFor="sex"> Sex  </label>
