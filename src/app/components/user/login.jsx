@@ -72,25 +72,14 @@ class UserLogin extends Component {
                       href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
                           this.loginWithProvider('facebook');
                       }} data-provider="facebook"
-                    >Facebook</a>
-
-                    <a
-                      href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
-                          this.loginWithProvider('twitter');
-                      }} data-provider="twitter"
-                    >Twitter</a>
+                    ><i className="fa fa-facebook" aria-hidden="true"></i>Facebook</a>
 
                     <a
                       href="#" className="btn btn-block btn-social btn-google" onClick={() => {
                           this.loginWithProvider('google');
                       }} data-provider="twitter"
-                    >Google</a>
+                    ><i className="fa fa-google" aria-hidden="true"></i>Google</a>
 
-                    <a
-                      href="#" className="btn btn-block btn-social btn-github" onClick={() => {
-                          this.loginWithProvider('github');
-                      }} data-provider="twitter"
-                    >Github</a>
 
                 </form>
             </div>
