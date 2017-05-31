@@ -14,13 +14,6 @@ import moment from 'moment';
 
 require('react-bootstrap-table/css/react-bootstrap-table.css')
 
-class ActionFormatter extends React.Component {
-  render() {
-    return (
-      <button className='btn btn-info'>Action</button>
-    );
-  }
-}
 
 class ConditionOverview extends Component {
 
@@ -53,11 +46,28 @@ class ConditionOverview extends Component {
             console.log("PEF table", pefDataRaw);
         });
     }
+    removePEF(e, refPath){
+        e.preventDefault();
+        if(confirm('If there are any recomendations for this it will make them unaccesable. Are you sure you want to delete it?')){
+            console.log("NUKE THAT PEF", refPath);
+            firebaseDb.ref(refPath).remove();
+        }
+
+    }
 
     actionFormatter(cell, row) {
       return (
             <Link to={'pef/'+this.props.patient+'/'+cell}>
                 <button type="button" className="btn btn-info">Recomendations</button>
+                {(this.props.patient == this.props.currentUser.uid)?
+                    <button 
+                        type="button" 
+                        className="btn btn-danger" 
+                        onClick={(e) => this.removePEF(e, 'pef/'+this.props.patient+'/'+cell)}>
+                            <i className="fa fa-trash" aria-hidden="true"></i>
+                    </button>:''
+                    
+                    }
             </Link>
         );
     }
