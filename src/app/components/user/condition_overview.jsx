@@ -86,8 +86,10 @@ class ConditionOverview extends Component {
 
                 <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
                   <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
-                      <TableHeaderColumn dataSort={ true } dataField='pef'>PEF value</TableHeaderColumn>
-                      <TableHeaderColumn dataSort={ true } dataField='date'>Date and time</TableHeaderColumn>
+                      <TableHeaderColumn dataSort={ true } filter={ 
+                        { type: 'NumberFilter', delay: 1000,  numberComparators: [ '=', '>', '<=' ] }
+                    }  dataField='pef'>PEF value</TableHeaderColumn>
+                      <TableHeaderColumn dataSort={ true } filter={ { type: 'DateFilter' } } dataField='date'>Date and time</TableHeaderColumn>
                       <TableHeaderColumn isKey dataField='id'  dataFormat={ this.actionFormatter.bind(this) }>Recomendations</TableHeaderColumn>
                   </BootstrapTable>
             </div>
