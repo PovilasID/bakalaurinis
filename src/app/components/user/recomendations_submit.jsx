@@ -47,7 +47,7 @@ class RecomendationsSubmit extends Component {
                 timestamp: moment().valueOf(),
             });
 
-            this.setState({message: ''});
+            this.setState({message: '', text: ''});
         } else {
             this.setState({message: "Recomendation has to be longer than 5 symbols"});
         }
@@ -56,7 +56,8 @@ class RecomendationsSubmit extends Component {
     componentWillReceiveProps(nextProps){
         console.log("NEW PROPS?", nextProps);
         if (nextProps.reply) {
-            var modifiedText = nextProps.reply.text.split('\n').map(s => `> ${s}`).join('\n');
+            var modifiedText = nextProps.reply.text+'\n by '+nextProps.reply.author.name+' on '+moment(nextProps.reply.timestamp).format('YYYY-MM-DD HH:ss');
+            modifiedText = modifiedText.split('\n').map(s => `> ${s}`).join('\n');
             this.setState({text: modifiedText+"\n"+this.state.text });
         }
     }
