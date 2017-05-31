@@ -30,7 +30,7 @@ class ConditionSummary extends Component {
     var pefRef = firebaseDb.ref('pef/'+this.props.currentUser.uid);
     pefRef.on('value', snap =>{
       var data = snap.val();
-      if(data==null){
+      if(data["pefNorms"]==null){
       this.setState({
         summaryText: "Please enter at least one PEF meassument",
       });
@@ -42,6 +42,7 @@ class ConditionSummary extends Component {
       chartDataRaw = chartDataRaw.sort(Comparator)
       lastPEF = chartDataRaw[Object.keys(chartDataRaw)[0]];
       if(this.state.norms != ''){
+        console.log("LOG NORMS", this.state.norms);
         if(lastPEF[1] <= this.state.norms["min"]){
           console.log("BELOW MIN");
           this.setState({
@@ -76,9 +77,12 @@ class ConditionSummary extends Component {
     });
 
     firebaseDb.ref("settings").child(this.props.currentUser.uid).child('pefNorms').on('value', snap =>{
-      if(snap.val() != null){
+      if(snap.val()["pefNorms"] != null){
         var norms = snap.val()["pefNorms"];
         this.setState({norms: norms});
+        console.log("LOG NORMS", this.state.norms);
+        console.log("LOG NORMS VAR", norms);
+
         if(lastPEF[1] <= norms["min"]){
           console.log("BELOW MIN");
           this.setState({
