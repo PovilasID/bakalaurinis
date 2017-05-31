@@ -4,6 +4,7 @@ import {
   REGISTER_FIREBASE_USER,
   LOGIN_FIREBASE_USER,
   FETCH_FIREBASE_USER,
+  FETCH_FIREBASE_USER_SETTINGS,
   UPDATE_FIREBASE_USER,
   CHANGE_FIREBASE_USER_PASSWORD,
   FIREBASE_PASSWORD_RESET_EMAIL,
@@ -43,6 +44,13 @@ export function fetchUser() {
     };
 }
 
+export function fetchUserSettings(userUID) {
+    const request = FireBaseTools.fetchUserSettings();
+    return {
+        type: FETCH_FIREBASE_USER_SETTINGS,
+        payload: request,
+    };
+}
 export function updateUser(user) {
     const request = FireBaseTools.updateUserProfile(user);
     return {

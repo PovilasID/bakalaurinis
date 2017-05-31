@@ -4,17 +4,25 @@ import { bindActionCreators } from 'redux';
 import firebase from '../../utils/firebase';
 
 
-import { fetchUser, updateUser } from '../../actions/firebase_actions';
+import { fetchUser, fetchUserSettings, updateUser } from '../../actions/firebase_actions';
 import Loading from '../helpers/loading';
 import ChangePassword from './change_password';
+import SubmitUserSettings from './submit_user_settings';
+import RoleSettings from './role_settings';
 
 class UserProfile extends Component {
 
     constructor(props) {
         super(props);
         this.props.fetchUser();
+        console.log("FULL STATE", this.state);
+        console.log("FULL PROPS", this.props);
+
+
         this.state = {
             message: '',
+            morning: 'disabled',
+            evening: 'disabled',
         };
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
@@ -23,7 +31,10 @@ class UserProfile extends Component {
         event.preventDefault();
         const email = this.refs.email.value;
         const displayName = this.refs.displayName.value;
-        this.props.updateUser({ email, displayName }).then((data) => {
+                console.log("USER PASSED TO RENDER", this.props.currentUser);
+                console.log("USER SETTINGS PASSED TO RENDER", this.props.currentUserSettings);
+
+        this.props.updateUser({ email, displayName}).then((data) => {
             if (data.payload.errorCode) {
                 this.setState({ message: data.payload.errorMessage });
             } else {
@@ -35,12 +46,28 @@ class UserProfile extends Component {
     );
     }
 
+    //@ TODO Merge evening and morning methods into one universal
+    handleMorningReminderChange (){
+       console.log(this.refs.morning_reminder.checked);
+        this.refs.morning_reminder.checked?this.setState({morning:''}):this.setState({morning:'disabled'})
+    console.log(this.state.morning)
+    }
+
+    handleEveningReminderChange (){
+       console.log(this.refs.morning_reminder.checked);
+        this.refs.evening_reminder.checked?this.setState({evening:''}):this.setState({evening:'disabled'})
+    console.log(this.state.evening)
+    }
     render() {
-        if (!this.props.currentUser) {
+        if (!this.props.currentUser && !this.props.currentUserSettings) {
             return <Loading />;
         }
+                console.log("USER PASSED TO RENDER", this.props.currentUser);
+                console.log("USER SETTINGS PASSED TO RENDER", this.props.currentUserSettings);
+        console.log("ALL PROP", this.props);
 
         return (
+
             <div className="col-md-6">
                 <form id="frmProfile" role="form" onSubmit={this.onFormSubmit}>
                     <h2>User Profile Page</h2>
@@ -61,8 +88,10 @@ class UserProfile extends Component {
                           name="displayName"
                         />
                     </div>
+                    
                     <button type="submit" className="btn btn-primary">Update</button>
                 </form>
+                <RoleSettings/>
                 <ChangePassword />
             </div>
         );
@@ -72,13 +101,13 @@ class UserProfile extends Component {
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchUser, updateUser }, dispatch);
+    return bindActionCreators({ fetchUser, fetchUserSettings, updateUser }, dispatch);
 }
 
 
 function mapStateToProps(state) {
-    return { currentUser: state.currentUser };
-}
+    return { currentUser: state.currentUser, currentUserSettings: state.currentUserSettings};
 
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

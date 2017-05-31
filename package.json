@@ -1,24 +1,30 @@
 {
-  "name": "react-redux-firebase-boilerplate",
+  "name": "oro-puslas",
   "version": "1.0.0",
-  "description": "Simple boilerplate for Reactjs with Redux and Firebase",
+  "description": "EN: A bachelor thesis projects that is a simple data colection system for asthma patients LT: Bakalaurinio darbo implementacija, kuri padeda astmos pacientasms surinkti savo būklės duomenis",
   "main": "index.jsx",
-  "repository": "git@github.com:btomashvili/react-redux-firebase-boilerplate.git",
+  "repository": "git@github.com:povilasid/bakalaurinis.git",
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config ./webpack/webpack-dev.config.js --watch --colors",
-    "build": "rm -rf dist && ./node_modules/.bin/webpack --config ./webpack/webpack-prod.config.js --colors",
+    "build": "rm -rf dist && webpack --config webpack/webpack-prod.config.js --colors",
     "start": "PORT=8080 pm2 start ./www.js",
     "test": "./node_modules/.bin/eslint src && ./node_modules/.bin/mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch",
     "lint": "./node_modules/.bin/eslint src"
   },
-  "author": "Beka Tomashvili",
+  "author": "Povilas Sidaravičius",
   "contributors": [
+    {
+      "name": "Beka Tomashvili",
+      "email": "bekatomashvili@gmail.com",
+      "url": "https://tomashvili.com/"
+    },
     {
       "name": "Alexander Wong",
       "email": "admin@alexander-wong.com",
       "url": "https://www.alexander-wong.com/"
     }
+
   ],
   "license": "MIT",
   "keywords": [
@@ -67,12 +73,23 @@
     "firebase": "^3.0.5",
     "font-awesome": "^4.6.3",
     "lodash": "^3.10.1",
+    "moment": "^2.18.1",
     "react": "^0.14.8",
+    "react-bootstrap-table": "^3.3.7",
+    "react-data-components": "^1.1.0",
+    "react-date-picker": "^5.3.28",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^0.14.3",
+    "react-radio-group": "^3.0.1",
     "react-redux": "^4.0.0",
     "react-router": "^2.0.0-rc5",
+    "react-select": "^1.0.0-rc.4",
+    "react-selectize": "^2.1.0",
+    "react-transition-group": "^1.1.1",
+    "recharts": "^1.0.0-alpha.0",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "victory": "^0.19.1"
   }
 }
