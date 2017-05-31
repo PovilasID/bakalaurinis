@@ -30,11 +30,12 @@ class ConditionSummary extends Component {
     var pefRef = firebaseDb.ref('pef/'+this.props.currentUser.uid);
     pefRef.on('value', snap =>{
       var data = snap.val();
-      if(data["pefNorms"]==null){
+      console.log("CHECK IF PEF NORSM ARE LIVE", data);
+      if(data==null){
       this.setState({
         summaryText: "Please enter at least one PEF meassument",
       });
-      }
+      }else{
       var chartData = [['Date', 'PEF']];
       var chartDataRaw = Object.keys(data).map(function (key) {
         return [data[key].timestamp, Number(data[key].pef)]; 
@@ -73,24 +74,26 @@ class ConditionSummary extends Component {
         summaryText: "Your last PEF meassument was: "+lastPEF[1],
       });
     }
+  }
       console.log("last pEF", lastPEF[1]);
     });
 
     firebaseDb.ref("settings").child(this.props.currentUser.uid).child('pefNorms').on('value', snap =>{
-      if(snap.val()["pefNorms"] != null){
-        var norms = snap.val()["pefNorms"];
+      if(snap.val() != null){
+        console.log("THE NORMS for SUMMARY", snap.val());
+        var norms = snap.val();
         this.setState({norms: norms});
         console.log("LOG NORMS", this.state.norms);
         console.log("LOG NORMS VAR", norms);
 
-        if(lastPEF[1] <= norms["min"]){
+        if(lastPEF[1] <= norms.min){
           console.log("BELOW MIN");
           this.setState({
             summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[1]} </span></p>
             <p>Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.</p></div>,
           });
 
-        }else if (lastPEF[1] > norms["min"] && lastPEF[1] < norms["mid"]) {
+        }else if (lastPEF[1] > norms.min && lastPEF[1] < norms.mid) {
 
           this.setState({
 
@@ -98,7 +101,7 @@ class ConditionSummary extends Component {
             <p>Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress.
             Please be careful.</p></div>,
           });
-        }else if (lastPEF[1] >= norms["mid"] ) {
+        }else if (lastPEF[1] >= norms.mid ) {
 
           this.setState({
             summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last PEF meassument was <span className="label label-success">{lastPEF[1]}</span></p>
@@ -106,7 +109,7 @@ class ConditionSummary extends Component {
             Enjoy your day.</p></div>,
           });
         }
-        console.log("CALL NT NULL", snap.val()["pefNorms"]["min"]);
+        console.log("CALL NT NULL", snap.val().min);
 
       }else{
 

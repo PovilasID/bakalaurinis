@@ -37,13 +37,15 @@ class ConditionOverview extends Component {
     componentWillMount(){
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
-            console.log("PEF in overview", snap.val());
-            this.setState({pefRaw: data});
-            var pefDataRaw = Object.keys(data).map(function (key) {
-                return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:ss'), pef: Number(data[key].pef), id: key};
-            });
-            this.setState({data: pefDataRaw});
-            console.log("PEF table", pefDataRaw);
+            if(data){
+                console.log("PEF in overview", snap.val());
+                this.setState({pefRaw: data});
+                var pefDataRaw = Object.keys(data).map(function (key) {
+                    return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:mm'), pef: Number(data[key].pef), id: key};
+                });
+                this.setState({data: pefDataRaw});
+                console.log("PEF table", pefDataRaw);
+            }
         });
     }
     removePEF(e, refPath){

@@ -24,7 +24,6 @@
       "email": "admin@alexander-wong.com",
       "url": "https://www.alexander-wong.com/"
     }
-
   ],
   "license": "MIT",
   "keywords": [
@@ -79,6 +78,7 @@
     "react-data-components": "^1.1.0",
     "react-date-picker": "^5.3.28",
     "react-datepicker": "^0.46.0",
+    "react-datetime": "^2.8.10",
     "react-dom": "^0.14.3",
     "react-radio-group": "^3.0.1",
     "react-redux": "^4.0.0",

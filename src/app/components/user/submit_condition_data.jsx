@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { submitCondition } from '../../actions/firebase_actions';
 import {firebase,firebaseDb} from '../../utils/firebase';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import Datetime from 'react-datetime';
 
+import 'react-datetime/css/react-datetime.css';
 
 
 class SubmitConditionData extends Component {
@@ -73,12 +73,7 @@ class SubmitConditionData extends Component {
           </div>
         </div>
         <div className="form-group">
-          <DatePicker
-              dateFormat="YYYY-MM-DD HH:mm"
-              selected={this.state.startDate}
-              todayButton="Today"
-              onChange={this.handleDateTimeChange}
-          />
+          <Datetime value={this.state.startDate} onChange={(date) => this.setState({startDate:date})} open={false} />
         </div>
         <button type="submit" className="btn btn-primary">Sumbmit</button>
       </form>
