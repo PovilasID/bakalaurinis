@@ -1,5 +1,5 @@
 {
-  "name": "oro-puslas",
+  "name": "oro-pulsas",
   "version": "1.0.0",
   "description": "EN: A bachelor thesis projects that is a simple data colection system for asthma patients LT: Bakalaurinio darbo implementacija, kuri padeda astmos pacientasms surinkti savo būklės duomenis",
   "main": "index.jsx",
