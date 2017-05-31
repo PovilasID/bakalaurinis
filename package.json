@@ -1,9 +1,9 @@
 {
-  "name": "react-redux-firebase-boilerplate",
+  "name": "oro-puslas",
   "version": "1.0.0",
-  "description": "Simple boilerplate for Reactjs with Redux and Firebase",
+  "description": "EN: A bachelor thesis projects that is a simple data colection system for asthma patients LT: Bakalaurinio darbo implementacija, kuri padeda astmos pacientasms surinkti savo būklės duomenis",
   "main": "index.jsx",
-  "repository": "git@github.com:btomashvili/react-redux-firebase-boilerplate.git",
+  "repository": "git@github.com:povilasid/bakalaurinis.git",
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config ./webpack/webpack-dev.config.js --watch --colors",
     "build": "rm -rf dist && webpack --config webpack/webpack-prod.config.js --colors",
@@ -12,13 +12,19 @@
     "test:watch": "npm run test -- --watch",
     "lint": "./node_modules/.bin/eslint src"
   },
-  "author": "Beka Tomashvili",
+  "author": "Povilas Sidaravičius",
   "contributors": [
+    {
+      "name": "Beka Tomashvili",
+      "email": "bekatomashvili@gmail.com",
+      "url": "https://tomashvili.com/"
+    },
     {
       "name": "Alexander Wong",
       "email": "admin@alexander-wong.com",
       "url": "https://www.alexander-wong.com/"
     }
+
   ],
   "license": "MIT",
   "keywords": [
