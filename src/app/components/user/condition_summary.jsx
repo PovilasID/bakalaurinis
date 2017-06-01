@@ -61,7 +61,7 @@ class ConditionSummary extends Component {
             });
 
           }else if ((lastPEF[2] > this.state.fev1Norms["min"] && lastPEF[2] < this.state.fev1Norms["mid"]) ||
-            (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[2]*0.8 >= previousPEF[2] || lastPEF[2]*1.2 <= previousPEF[2])) ){
+            (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[2]*0.8 >= previousPEF[2] || lastPEF[2]*1.2 <= previousPEF[2]) && previousPEF[2] > 0 ) ){
 
             this.setState({
 
@@ -126,6 +126,7 @@ class ConditionSummary extends Component {
         console.log("LOG NORMS VAR", norms);
 
         if(lastPEF[2] > 0 ){
+          //FEV
           if(lastPEF[2] <= fev1Norms.min){
             console.log("BELOW MIN");
             this.setState({
@@ -134,7 +135,7 @@ class ConditionSummary extends Component {
             });
 
           }else if ((lastPEF[2] > fev1Norms.min && lastPEF[2] < fev1Norms.mid) ||
-            (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[2]*0.8 >= previousPEF[2] || lastPEF[2]*1.2 <= previousPEF[2])) ){
+            (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[2]*0.8 >= previousPEF[2] || lastPEF[2]*1.2 <= previousPEF[2]) && previousPEF[2] > 0 ) ){
 
             this.setState({
 
