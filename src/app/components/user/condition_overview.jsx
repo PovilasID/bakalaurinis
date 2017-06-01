@@ -41,14 +41,15 @@ class ConditionOverview extends Component {
                 console.log("PEF in overview", snap.val());
                 this.setState({pefRaw: data});
                 var pefDataRaw = Object.keys(data).map(function (key) {
-                    return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:mm'), pef: Number(data[key].pef), id: key};
+                    return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:mm'), pef: Number(data[key].pef), id: key, fev1: Number(data[key].fev1)};
                 });
                 this.setState({data: pefDataRaw});
-                console.log("PEF table", pefDataRaw);
+                console.log("TABLE DATA", pefDataRaw);
+
             }
         });
     }
-    removePEF(e, refPath){
+    removeMeassurment(e, refPath){
         e.preventDefault();
         if(confirm('If there are any recomendations for this it will make them unaccesable. Are you sure you want to delete it?')){
             console.log("NUKE THAT PEF", refPath);
@@ -58,6 +59,7 @@ class ConditionOverview extends Component {
     }
 
     actionFormatter(cell, row) {
+        console.log("TABLE ROW", row);
       return (
             <Link to={'pef/'+this.props.patient+'/'+cell}>
                 <button type="button" className="btn btn-info">Recomendations</button>
@@ -65,7 +67,7 @@ class ConditionOverview extends Component {
                     <button 
                         type="button" 
                         className="btn btn-danger" 
-                        onClick={(e) => this.removePEF(e, 'pef/'+this.props.patient+'/'+cell)}>
+                        onClick={(e) => this.removeMeassurment(e, 'pef/'+this.props.patient+'/'+cell)}>
                             <i className="fa fa-trash" aria-hidden="true"></i>
                     </button>:''
                     
@@ -86,9 +88,28 @@ class ConditionOverview extends Component {
 
                 <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
                   <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
-                      <TableHeaderColumn dataSort={ true } filter={ 
-                        { type: 'NumberFilter', delay: 1000,  numberComparators: [ '=', '>', '<=' ] }
-                    }  dataField='pef'>PEF value</TableHeaderColumn>
+                      <TableHeaderColumn 
+                        dataSort={ true } 
+                        filter={
+                            { 
+                                type: 'NumberFilter', 
+                                delay: 1000,  
+                                numberComparators: [ '=', '>', '<=' ] 
+                            }
+                        }
+                        dataField='pef'>PEF value
+                        </TableHeaderColumn>
+                      <TableHeaderColumn 
+                        dataSort={ true } 
+                        filter={
+                            { 
+                                type: 'NumberFilter', 
+                                delay: 1000,  
+                                numberComparators: [ '=', '>', '<=' ] 
+                            }
+                        }
+                        dataField='fev1'>FEV1 value
+                        </TableHeaderColumn>
                       <TableHeaderColumn dataSort={ true } filter={ { type: 'DateFilter' } } dataField='date'>Date and time</TableHeaderColumn>
                       <TableHeaderColumn isKey dataField='id'  dataFormat={ this.actionFormatter.bind(this) }>Recomendations</TableHeaderColumn>
                   </BootstrapTable>
