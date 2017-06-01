@@ -26,6 +26,8 @@ class ConditionOverview extends Component {
             data: [],
             products:[],
             pefRaw: {},
+            pefNorms: {},
+            fev1Norms: {},
             options: {
                 defaultSortName: 'date', 
                 defaultSortOrder: 'desc'
@@ -35,6 +37,11 @@ class ConditionOverview extends Component {
 
 
     componentWillMount(){
+        firebaseDb.ref("settings").child(this.props.patient).on('value', snap =>{
+            this.setState({pefNorms: snap.val().pefNorms});
+            this.setState({fev1Norms: snap.val().fev1Norms});
+        });
+
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
             if(data){
@@ -48,6 +55,7 @@ class ConditionOverview extends Component {
 
             }
         });
+
     }
     removeMeassurment(e, refPath){
         e.preventDefault();
@@ -76,6 +84,27 @@ class ConditionOverview extends Component {
         );
     }
 
+    pefColumnClassNameFormat(fieldValue, row, rowIdx, colIdx) {
+        if(fieldValue < this.state.pefNorms.min){
+            return 'danger';
+        }else if (fieldValue >= this.state.pefNorms.min && fieldValue <= this.state.pefNorms.mid) {
+            return 'warning';
+        } else if (fieldValue > this.state.pefNorms.mid){
+            return 'success';
+        }
+    }
+    fev1ColumnClassNameFormat(fieldValue, row, rowIdx, colIdx) {
+        if(fieldValue>0){
+            if(fieldValue < this.state.fev1Norms.min){
+                return 'danger';
+            }else if (fieldValue >= this.state.fev1Norms.min && fieldValue <= this.state.fev1Norms.mid) {
+                return 'warning';
+            } else if (fieldValue > this.state.fev1Norms.mid){
+                return 'success';
+            }
+        }
+    }
+
 
     // @ TODO add delete add color lights add lines or dot coloring add difference chart
     render() {
@@ -89,6 +118,7 @@ class ConditionOverview extends Component {
                 <ConditionChart patient={this.props.patient} pefRaw={this.state.pefRaw}/>
                   <BootstrapTable data={this.state.data} options={ this.state.options} striped hover pagination>
                       <TableHeaderColumn 
+                        columnClassName={this.pefColumnClassNameFormat.bind(this)}
                         dataSort={ true } 
                         filter={
                             { 
@@ -100,6 +130,7 @@ class ConditionOverview extends Component {
                         dataField='pef'>PEF value
                         </TableHeaderColumn>
                       <TableHeaderColumn 
+                        columnClassName={this.fev1ColumnClassNameFormat.bind(this)}
                         dataSort={ true } 
                         filter={
                             { 
