@@ -31,7 +31,7 @@ class ConditionChart extends Component {
 
       },
       data: [
-        ['Date', 'PEF'],
+        ['Date', 'PEF', {'type': 'string', 'role': 'style'}],
         [0,0]
       ],
 
@@ -51,9 +51,9 @@ class ConditionChart extends Component {
       var data = snap.val();
       if(data){
 
-        var chartData = [['Date', 'PEF']];
+        var chartData = [['Date', 'PEF', {'type': 'string', 'role': 'style'}]];
         var chartDataRaw = Object.keys(data).map(function (key) {
-          return [new Date(data[key].timestamp), Number(data[key].pef)]; 
+          return [new Date(data[key].timestamp), Number(data[key].pef), 'point {fill-color: green']; 
         });
         chartDataRaw = chartDataRaw.sort(Comparator)
          this.setState({
