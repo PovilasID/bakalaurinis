@@ -81,12 +81,14 @@ class ConditionOverview extends Component {
     }
 
     pefColumnClassNameFormat(fieldValue, row, rowIdx, colIdx) {
-        if(fieldValue < this.state.pefNorms.min){
-            return 'danger';
-        }else if (fieldValue >= this.state.pefNorms.min && fieldValue <= this.state.pefNorms.mid) {
-            return 'warning';
-        } else if (fieldValue > this.state.pefNorms.mid){
-            return 'success';
+        if(this.state.pefNorms){
+            if(fieldValue < this.state.pefNorms.min){
+                return 'danger';
+            }else if (fieldValue >= this.state.pefNorms.min && fieldValue <= this.state.pefNorms.mid) {
+                return 'warning';
+            } else if (fieldValue > this.state.pefNorms.mid){
+                return 'success';
+            }
         }
     }
     fev1ColumnClassNameFormat(fieldValue, row, rowIdx, colIdx) {

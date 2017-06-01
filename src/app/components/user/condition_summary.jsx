@@ -110,7 +110,7 @@ class ConditionSummary extends Component {
     firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
       var norms = snap.val().pefNorms;
       var fev1Norms = snap.val().fev1Norms;
-      if(snap.val() != null){
+      if(norms!= null){
         this.setState({norms: norms});
         this.setState({fev1Norms: fev1Norms});
 
