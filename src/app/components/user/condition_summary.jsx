@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { submitCondition } from '../../actions/firebase_actions';
 import {firebase,firebaseDb} from '../../utils/firebase';
+import moment from 'moment';
 
 
 
@@ -22,6 +23,7 @@ class ConditionSummary extends Component {
 
   componentDidMount(){
     var lastPEF = 0;
+    var previousPEF = 0;
      function Comparator(a, b) {
        if (a[0] > b[0]) return -1;
        if (a[0] < b[0]) return 1;
@@ -42,6 +44,10 @@ class ConditionSummary extends Component {
       });
       chartDataRaw = chartDataRaw.sort(Comparator)
       lastPEF = chartDataRaw[Object.keys(chartDataRaw)[0]];
+            console.log("PEF DATA RAW", chartDataRaw);
+      previousPEF = chartDataRaw[Object.keys(chartDataRaw)[1]];
+            console.log("PREW PEF TIME", moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')));
+
       if(this.state.norms != ''){
         console.log("LOG NORMS", this.state.norms);
         if(lastPEF[1] <= this.state.norms["min"]){
@@ -51,7 +57,8 @@ class ConditionSummary extends Component {
             <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
           });
 
-        }else if (lastPEF[1] > this.state.norms["min"] && lastPEF[1] < this.state.norms["mid"]) {
+        }else if ((lastPEF[1] > this.state.norms["min"] && lastPEF[1] < this.state.norms["mid"]) ||
+          (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[1]*0.8 >= previousPEF[1] || lastPEF[1]*1.2 <= previousPEF[1])) ){
 
           this.setState({
 
@@ -93,7 +100,11 @@ class ConditionSummary extends Component {
             <p>Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.</p></div>,
           });
 
-        }else if (lastPEF[1] > norms.min && lastPEF[1] < norms.mid) {
+        }else if ((lastPEF[1] > norms.min && lastPEF[1] < norms.mid) ||
+          (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[1]*0.8 >= previousPEF[1] || lastPEF[1]*1.2 <= previousPEF[1])) )  {
+
+          console.log("COMMING FROM BELOW", lastPEF[1]*0.8 );
+
 
           this.setState({
 
