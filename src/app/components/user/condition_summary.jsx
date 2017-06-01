@@ -45,15 +45,18 @@ class ConditionSummary extends Component {
       chartDataRaw = chartDataRaw.sort(Comparator)
       lastPEF = chartDataRaw[Object.keys(chartDataRaw)[0]];
             console.log("PEF DATA RAW", chartDataRaw);
+
+      // @ TODO handel if its the only one
       previousPEF = chartDataRaw[Object.keys(chartDataRaw)[1]];
             console.log("PREW PEF TIME", moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')));
 
       if(this.state.norms != ''){
         if(lastPEF[2] > 0 ){
+          //FEV 
           if(lastPEF[2] <= this.state.fev1Norms["min"]){
             console.log("BELOW MIN");
             this.setState({
-              summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
+              summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last FEV1 meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
               <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
             });
 
@@ -62,14 +65,14 @@ class ConditionSummary extends Component {
 
             this.setState({
 
-              summaryText: <div><h2><span className="label label-warning">CAUSION!</span></h2> <p>Your last PEF meassument was <span className="label label-warning"> {lastPEF[2]} </span></p>
+              summaryText: <div><h2><span className="label label-warning">CAUSION!</span></h2> <p>Your last FEV1 meassument was <span className="label label-warning"> {lastPEF[2]} </span></p>
               <p>Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress.
               Please be careful.</p></div>,
             });
           }else if (lastPEF[2] >= this.state.fev1Norms["mid"] ) {
 
             this.setState({
-              summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last PEF meassument was <span className="label label-success">{lastPEF[1]}</span></p>
+              summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last FEV1 meassument was <span className="label label-success">{lastPEF[2]}</span></p>
               <p>Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress.
               Enjoy your day.</p></div>,
             });
@@ -126,7 +129,7 @@ class ConditionSummary extends Component {
           if(lastPEF[2] <= fev1Norms.min){
             console.log("BELOW MIN");
             this.setState({
-              summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
+              summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last FEV1 meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
               <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
             });
 
@@ -135,14 +138,14 @@ class ConditionSummary extends Component {
 
             this.setState({
 
-              summaryText: <div><h2><span className="label label-warning">CAUSION!</span></h2> <p>Your last PEF meassument was <span className="label label-warning"> {lastPEF[2]} </span></p>
+              summaryText: <div><h2><span className="label label-warning">CAUSION!</span></h2> <p>Your last FEV1 meassument was <span className="label label-warning"> {lastPEF[2]} </span></p>
               <p>Its below avearge and the day of meassument you may be more suceptable to alergens, physical or emotional stress.
               Please be careful.</p></div>,
             });
           }else if (lastPEF[2] >= fev1Norms.mid ) {
 
             this.setState({
-              summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last PEF meassument was <span className="label label-success">{lastPEF[1]}</span></p>
+              summaryText: <div><h2><span className="label label-success">Congradulations!</span></h2> <p> Your last FEV1 meassument was <span className="label label-success">{lastPEF[2]}</span></p>
               <p>Its above avearge and the day of meassument you should be more resiliant to alergens, physical or emotional stress.
               Enjoy your day.</p></div>,
             });
