@@ -41,6 +41,7 @@ class SubmitConditionData extends Component {
       if (pef && this.state.startDate.isBefore(Datetime.moment())) {
         firebaseDb.ref("pef").child(this.props.currentUser.uid).push().set({
           pef: pef,
+          fev1: fev1,
           timestamp: timestamp,
         });
         if(fev1){
