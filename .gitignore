@@ -41,3 +41,4 @@ jspm_packages
 .idea/
 .vscode
 firebase-debug.log
+stats.json

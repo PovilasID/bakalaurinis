@@ -17,7 +17,7 @@ class SubmitUserSettings extends Component {
       this.onFormSubmit = this.onFormSubmit.bind(this);
       this.state = {
         message: '',
-        startDate: moment().subtract(18, 'years'), 
+        startDate: Datetime.moment().subtract(18, 'years'), 
         sex: '',
         height: '',
     };
@@ -84,7 +84,7 @@ class SubmitUserSettings extends Component {
 
       } 
 
-      if(height && birthday && sex){
+      if(height && birthday && sex && this.state.startDate.isBefore(Datetime.moment().subtract(3, 'years'))){
         firebaseDb.ref("settings").child(this.props.currentUser.uid).set({
           height: height,
           birthday: birthday,
@@ -110,6 +110,10 @@ class SubmitUserSettings extends Component {
     this.setState({sex: value});
   }
 
+  getValidDate(currentDate, selectedDate){
+    console.log("THE CURRENT", current);
+    return currentDate.isAfter(  moment() );
+  }
     render() {
       return (
       <form id="SubmitConditionData" role="form" onSubmit={this.onFormSubmit}>
@@ -127,7 +131,14 @@ class SubmitUserSettings extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="birthday"> Birthday  </label>
-          <Datetime className="birthday" value={this.state.startDate} dateFormat="YYYY-MM-DD" timeFormat={false}  onChange={(date) => this.setState({startDate:date})} />
+          <Datetime 
+            className="birthday" 
+            value={this.state.startDate} 
+            dateFormat="YYYY-MM-DD" 
+            isValidDate={(current) => current.isBefore(Datetime.moment().subtract(3, 'years'))}
+            timeFormat={false}  
+            onChange={(date) => this.setState({startDate:date})} 
+          />
 
         </div>
         <div className="form-group">

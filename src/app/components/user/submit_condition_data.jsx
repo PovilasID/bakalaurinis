@@ -16,7 +16,7 @@ class SubmitConditionData extends Component {
       this.onFormSubmit = this.onFormSubmit.bind(this);
       this.state = {
         message: '',
-        startDate: moment(),
+        startDate: Datetime.moment(),
     };
     this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
   }
@@ -32,7 +32,13 @@ class SubmitConditionData extends Component {
       let fev1 = this.refs.fev1.value;
       let timestamp = this.state.startDate.valueOf();
       this.setState({message: '',});
-      if (pef) {
+      if(this.state.startDate == ''){
+        this.setState({
+          startDate: Datetime.moment(),
+        });
+      }
+
+      if (pef && this.state.startDate.isBefore(Datetime.moment())) {
         firebaseDb.ref("pef").child(this.props.currentUser.uid).push().set({
           pef: pef,
           timestamp: timestamp,
@@ -43,9 +49,17 @@ class SubmitConditionData extends Component {
           timestamp: timestamp,
         });
         }
-      }else{
+      }else if(!pef){
         this.setState({
           message: 'Please enter PEF',
+        });
+      }else if(this.state.startDate.isAfter(Datetime.moment())){
+        this.setState({
+          message: 'Please enter only dates and times in the past',
+        });
+      }else{
+        this.setState({
+          message: 'Fill the form',
         });
       }
       
@@ -73,7 +87,13 @@ class SubmitConditionData extends Component {
           </div>
         </div>
         <div className="form-group">
-          <Datetime value={this.state.startDate} dateFormat="YYYY-MM-DD" timeFormat="HH:mm"  onChange={(date) => this.setState({startDate:date})} />
+          <Datetime 
+            value={this.state.startDate} 
+            dateFormat="YYYY-MM-DD" 
+            timeFormat="HH:mm"  
+            isValidDate={(current) => current.isBefore(Datetime.moment())}
+            onChange={(date) => this.setState({startDate:date})} 
+          />
         </div>
         <button type="submit" className="btn btn-primary">Sumbmit</button>
       </form>
