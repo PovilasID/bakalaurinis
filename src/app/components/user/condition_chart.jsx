@@ -62,10 +62,6 @@ class ConditionChart extends Component {
          this.setState({
           data: chartData.concat(chartDataRaw)
         });
-        console.log("STATE FORMAT", this.state.data);
-        console.log("CONCAT RESULTS", chartData.concat(chartDataRaw) );
-        console.log("CHART ARRAY DEFAULTS", this.state.data);
-        console.log("TEST GOOGLE DATE FORMAT", new Date(2000, 8, 5));
       }
     });
   }

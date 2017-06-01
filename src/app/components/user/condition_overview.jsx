@@ -45,7 +45,6 @@ class ConditionOverview extends Component {
         firebaseDb.ref("pef").child(this.props.patient).on('value', snap =>{
             var data = snap.val();
             if(data){
-                console.log("PEF in overview", snap.val());
                 this.setState({pefRaw: data});
                 var pefDataRaw = Object.keys(data).map(function (key) {
                     return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:mm'), pef: Number(data[key].pef), id: key, fev1: Number(data[key].fev1)};
@@ -67,7 +66,6 @@ class ConditionOverview extends Component {
     }
 
     actionFormatter(cell, row) {
-        console.log("TABLE ROW", row);
       return (
             <Link to={'pef/'+this.props.patient+'/'+cell}>
                 <button type="button" className="btn btn-info">Recomendations</button>
