@@ -54,8 +54,10 @@ class SubmitUserSettings extends Component {
       let sex = this.state.sex;
       console.log("data imput", height, birthday, sex);
       this.setState({message: '',});
-      var pefMin =0;
+      var pefMin=0;
       var pefMid=0;
+      var fev1Min=0;
+      var fev1Mid=0;
       function getAge(dateString) {
           var today = new Date();
           var birthDate = new Date(dateString);
@@ -75,15 +77,30 @@ class SubmitUserSettings extends Component {
 
       var age = getAge(birthday);
       if(sex == "male"){
+        if(age < 20){
+          fev1Mid = (-0.7453+height*height*0.00014098+age*-0.04106+age*age*0.004477)*0.8*60;
+          fev1Min = (-0.7453+height*height*0.00014098+age*-0.04106+age*age*0.004477)*0.5*60;
+        }else{
+          fev1Mid=(0.5536+height*height*0.00014098+age*-0.01303+age*age*-0.000172)*0.8*60;
+          fev1Min=(0.5536+height*height*0.00014098+age*-0.01303+age*age*-0.000172)*0.5*60;
+
+        }
         //pefMin =Math.pow(Math.E, 0.544 * Math.log10(age) - 0.0151 *(age) - 74.7/(height) + 5.48);
         pefMin=  (eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48))*0.5;
         pefMid=  eTo((0.544 * ln(age)) - (0.0151 * age) - (74.7 / height) + 5.48);
       }else{
+        if(age < 18){
+          fev1Mid =(-0.871+height*height*0.00011496+age*0.06537)*0.8*60;
+          fev1Min =(-0.871+height*height*0.00011496+age*0.06537)*0.5*60;
+        }else{
+          fev1Mid=(0.4333+height*height*0.00011496+age*-0.00361+age*age*-0.000194)*0.8*60;
+          fev1Min=(0.4333+height*height*0.00011496+age*-0.00361+age*age*-0.000194)*0.5*60;
+        }
         pefMid =  eTo((0.376 * ln(age)) - (0.012 * age) - (58.8 / height) + 5.63);
         pefMin = (eTo((0.376 * ln(age)) - (0.012 * age) - (58.8 / height) + 5.63))*0.5;
 
       } 
-
+      console.log("MID FEV1", fev1Mid*60);
       if(height && birthday && sex && this.state.startDate.isBefore(Datetime.moment().subtract(3, 'years'))){
         firebaseDb.ref("settings").child(this.props.currentUser.uid).set({
           height: height,
@@ -92,8 +109,11 @@ class SubmitUserSettings extends Component {
           pefNorms:{
             min: pefMin,
             mid: pefMid,
-          }
-
+          },
+          fev1Norms:{
+            min: fev1Min,
+            mid: fev1Mid,
+          },
         });
         this.setState({
           message: 'Personal settings set',
@@ -103,6 +123,7 @@ class SubmitUserSettings extends Component {
           message: 'Please enter height, birthday and sex',
         });        
       }
+
     
   }
 
