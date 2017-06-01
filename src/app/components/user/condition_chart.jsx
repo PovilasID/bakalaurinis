@@ -44,16 +44,13 @@ class ConditionChart extends Component {
        if (a[0] > b[0]) return 1;
        return 0;
      }
-    console.log("USER ID IN CHARTS", this.props.patient);
-    console.log("PEF PROPS in CHARTS", this.props.pefRaw);
 
     var startDate = moment().subtract(2, 'days').valueOf();
     var endDate = moment().valueOf();
     firebaseDb.ref("pef").child(this.props.patient).orderByChild("timestamp").startAt(this.state.startDate).endAt(this.state.endDate).on('value', snap =>{
       var data = snap.val();
       if(data){
-        console.log("PEF DATA IN CHART", data);
-        console.log("PEF RAW DATA FROM PROPS", this.props);
+
         var chartData = [['Date', 'PEF']];
         var chartDataRaw = Object.keys(data).map(function (key) {
           return [new Date(data[key].timestamp), Number(data[key].pef)]; 

@@ -33,7 +33,6 @@ class ConditionSummary extends Component {
     var pefRef = firebaseDb.ref('pef/'+this.props.currentUser.uid);
     pefRef.on('value', snap =>{
       var data = snap.val();
-      console.log("CHECK IF PEF NORSM ARE LIVE", data);
       if(data==null){
       this.setState({
         summaryText: "Please enter at least one PEF meassument",
@@ -44,17 +43,14 @@ class ConditionSummary extends Component {
       });
       chartDataRaw = chartDataRaw.sort(Comparator)
       lastPEF = chartDataRaw[Object.keys(chartDataRaw)[0]];
-            console.log("PEF DATA RAW", chartDataRaw);
 
       // @ TODO handel if its the only one
       previousPEF = chartDataRaw[Object.keys(chartDataRaw)[1]];
-            console.log("PREW PEF TIME", moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')));
 
       if(this.state.norms != ''){
         if(lastPEF[2] > 0 ){
           //FEV 
           if(lastPEF[2] <= this.state.fev1Norms["min"]){
-            console.log("BELOW MIN");
             this.setState({
               summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last FEV1 meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
               <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
@@ -79,9 +75,7 @@ class ConditionSummary extends Component {
           }
 
         }else{
-          console.log("LOG NORMS", this.state.norms);
           if(lastPEF[1] <= this.state.norms["min"]){
-            console.log("BELOW MIN");
             this.setState({
               summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[1]} </span></p>
               <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
@@ -104,7 +98,6 @@ class ConditionSummary extends Component {
               Enjoy your day.</p></div>,
             });
           }
-        //console.log("CALL NT NULL", snap.val()["pefNorms"]["min"]);
         }
       }else{
       this.setState({
@@ -112,23 +105,18 @@ class ConditionSummary extends Component {
       });
     }
   }
-      console.log("last pEF", lastPEF);
     });
 
     firebaseDb.ref("settings").child(this.props.currentUser.uid).on('value', snap =>{
       var norms = snap.val().pefNorms;
       var fev1Norms = snap.val().fev1Norms;
       if(snap.val() != null){
-        console.log("THE NORMS for SUMMARY", snap.val());
         this.setState({norms: norms});
         this.setState({fev1Norms: fev1Norms});
-        console.log("LOG NORMS", this.state.norms);
-        console.log("LOG NORMS VAR", norms);
 
         if(lastPEF[2] > 0 ){
           //FEV
           if(lastPEF[2] <= fev1Norms.min){
-            console.log("BELOW MIN");
             this.setState({
               summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last FEV1 meassument was <span className="label label-danger">{lastPEF[2]} </span></p>
               <p>Its CRITICLY low please consider taking <u>imediate action</u>. Visit your doctors or refer to your action plan.</p></div>,
@@ -155,7 +143,6 @@ class ConditionSummary extends Component {
         }else{
 
           if(lastPEF[1] <= norms.min){
-            console.log("BELOW MIN");
             this.setState({
               summaryText: <div><h2><span className="label label-danger">WARNING! </span></h2> <p> Your last PEF meassument was <span className="label label-danger">{lastPEF[1]} </span></p>
               <p>Its CRITICLY low plase consider taking imediate action. Visit your doctors or refer to your action plan.</p></div>,
@@ -163,8 +150,6 @@ class ConditionSummary extends Component {
 
           }else if ((lastPEF[1] > norms.min && lastPEF[1] < norms.mid) ||
             (moment(previousPEF[0]).isAfter(moment(lastPEF[0]).subtract(1, 'day')) &&  (lastPEF[1]*0.8 >= previousPEF[1] || lastPEF[1]*1.2 <= previousPEF[1])) )  {
-
-            console.log("COMMING FROM BELOW", lastPEF[1]*0.8 );
 
 
             this.setState({
@@ -182,7 +167,6 @@ class ConditionSummary extends Component {
             });
           }
         }
-        console.log("CALL NT NULL", snap.val().min);
 
       }else{
 
@@ -190,7 +174,6 @@ class ConditionSummary extends Component {
       
 
     });
-    console.log("CALL RESP", lastPEF[1]);
 
   }
 

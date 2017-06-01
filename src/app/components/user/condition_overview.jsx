@@ -50,7 +50,6 @@ class ConditionOverview extends Component {
                     return {date: moment(data[key].timestamp).format('YYYY-MM-DD HH:mm'), pef: Number(data[key].pef), id: key, fev1: Number(data[key].fev1)};
                 });
                 this.setState({data: pefDataRaw});
-                console.log("TABLE DATA", pefDataRaw);
 
             }
         });
@@ -59,7 +58,6 @@ class ConditionOverview extends Component {
     removeMeassurment(e, refPath){
         e.preventDefault();
         if(confirm('If there are any recomendations for this it will make them unaccesable. Are you sure you want to delete it?')){
-            console.log("NUKE THAT PEF", refPath);
             firebaseDb.ref(refPath).remove();
         }
 
